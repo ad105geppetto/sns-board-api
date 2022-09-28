@@ -1,5 +1,5 @@
 <div align=center>
-<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=250&section=header&text=🐉Boss%20Raid%20Game%20API🐉&fontSize=45" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=250&section=header&text=SNS%20게시글%20API%20서버&fontSize=45" />
   </br>
   <b id=content>SNS 게시글 API 서버</b>
   </br></br>
