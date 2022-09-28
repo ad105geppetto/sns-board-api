@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { UserInfoDTO } from './dto/userInfo.dto';
-import { Users } from './users.model';
+import { UserInfoDTO } from '../dto/userInfo.dto';
+import { Users } from '../users.model';
 
 @Injectable()
-export class UsersService {
+export class SignupService {
   constructor(
     @InjectModel(Users) private userModel: typeof Users,
   ) { }
