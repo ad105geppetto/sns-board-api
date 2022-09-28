@@ -2,6 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AppService } from './app.service';
+import { UsersModule } from './users/users.module';
+import { Users } from './users/users.model';
+const dotenv = require("dotenv");
+dotenv.config();
 
 @Module({
   imports: [
@@ -12,7 +16,7 @@ import { AppService } from './app.service';
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE,
-      models: [],
+      models: [Users],
       dialectOptions: {
         useUTC: false, //for reading from database
         dateStrings: true,
@@ -20,7 +24,8 @@ import { AppService } from './app.service';
         timezone: '+09:00',
       },
       timezone: "+09:00"
-    })
+    }),
+    UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],
