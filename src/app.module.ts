@@ -4,6 +4,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { Users } from './users/users.model';
+const dotenv = require("dotenv");
+dotenv.config();
 
 @Module({
   imports: [
