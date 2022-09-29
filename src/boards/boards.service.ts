@@ -33,9 +33,9 @@ export class BoardsService {
         return { id: id, name: name }
       }))
 
-      hashTags.map(async (hashTag) => {
-        return await this.boardHashTagModel.create({ board_id: board.id, hashTag_id: hashTag.id }, transactionHost);
-      })
+      await Promise.all(hashTags.map(async (hashTag) => {
+        await this.boardHashTagModel.create({ board_id: board.id, hashTag_id: hashTag.id }, transactionHost);
+      }))
 
       return { board: board, hashTags: hashTags }
     })
