@@ -4,6 +4,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { Users } from './users/users.model';
+import { BoardsModule } from './boards/boards.module';
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -25,7 +26,8 @@ dotenv.config();
       },
       timezone: "+09:00"
     }),
-    UsersModule
+    UsersModule,
+    BoardsModule
   ],
   controllers: [AppController],
   providers: [AppService],
