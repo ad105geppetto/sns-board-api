@@ -1,4 +1,5 @@
 import { Column, Model, Table, HasMany } from 'sequelize-typescript';
+import { BoardHashTags } from './board_hashTags.model';
 import { HashTags } from './hashTag.model';
 
 @Table({
@@ -13,6 +14,6 @@ export class Boards extends Model<Boards> {
   @Column
   content: string;
 
-  @HasMany(() => HashTags)
-  hashTags: HashTags[];
+  @HasMany(() => BoardHashTags)
+  boardHashTags: BoardHashTags[];
 }
