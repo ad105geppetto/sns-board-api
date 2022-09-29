@@ -8,6 +8,12 @@ export class BoardsController {
 
   @Post()
   async create(@Body() boardInfo: BoardInfoDTO) {
+    boardInfo.hashTags.forEach((hashTag) => {
+      if (hashTag.indexOf("#") !== 0) {
+        throw new BadRequestException("각각의 hashTag에 #이 포함되어야 합니다.")
+      }
+    })
+
     const data = await this.BoardsService.create(boardInfo)
 
     return data
