@@ -46,7 +46,11 @@ $ npm run test:e2e
 
 ## 📌 DB 모델링
 
+![sns](https://user-images.githubusercontent.com/92367032/193233335-e4561980-1870-40af-a6b8-ea5c8db223b1.png)
+
 ## 📌 API 문서
+
+https://iris-feta-eb2.notion.site/6072d6b25ca341c495c59f516374e05b?v=7979a1842b02439ea9c855e19787bc89
 
 ## 📌 Commit Convention
 
