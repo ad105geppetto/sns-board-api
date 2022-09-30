@@ -1,5 +1,5 @@
 import { Column, Model, Table, BelongsToMany, BelongsTo, ForeignKey } from 'sequelize-typescript';
-import { Users } from 'src/users/users.model';
+import { Users } from '../../users/users.model';
 import { BoardHashTags } from './board_hashTags.model';
 import { HashTags } from './hashTag.model';
 
