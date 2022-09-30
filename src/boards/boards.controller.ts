@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Headers, BadRequestException, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Param, Headers, BadRequestException, Patch, Delete } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardInfoDTO } from './dto/boardInfo.dto';
 import { UpdateBoardInfoDTO } from './dto/updateBoardInfo.dto';
@@ -42,6 +42,21 @@ export class BoardsController {
       }
 
       const data = await this.BoardsService.update(boardId, boardInfo, Authorization)
+
+      return data
+    } catch (error) {
+      throw new BadRequestException(error.message)
+    }
+  }
+
+  @Delete(":boardId")
+  async delete(@Param("boardId") boardId: number, @Headers("Authorization") Authorization: string) {
+    try {
+      if (!Authorization) {
+        throw new BadRequestException("로그인해주세요.")
+      }
+
+      const data = await this.BoardsService.delete(boardId, Authorization)
 
       return data
     } catch (error) {

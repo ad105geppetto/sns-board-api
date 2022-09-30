@@ -85,4 +85,24 @@ export class BoardsService {
     }))
     return { ...newBoard, hashTags: hashTags }
   }
+
+  async delete(boardId: number, Authorization: string) {
+    const tokenInfo = this.jwtService.verify(Authorization)
+    const board = await this.boardModel.findByPk(boardId, {
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "deletedAt"]
+      }, raw: true
+    })
+
+    if (tokenInfo.id !== board.user_id) {
+      throw new BadRequestException("해당 글의 작성자가 아닙니다.")
+    }
+
+    await this.sequelize.transaction(async (transaction) => {
+      await this.boardModel.destroy({ where: { id: boardId }, transaction })
+      await this.boardHashTagModel.destroy({ where: { board_id: boardId }, transaction })
+    })
+
+    return { id: boardId }
+  }
 }
