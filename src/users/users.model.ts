@@ -1,4 +1,5 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Column, Model, Table, HasMany } from 'sequelize-typescript';
+import { Boards } from 'src/boards/models/boards.model';
 
 @Table({
   paranoid: true,
@@ -8,4 +9,7 @@ import { Column, Model, Table } from 'sequelize-typescript';
 export class Users extends Model<Users> {
   @Column
   email: string;
+
+  @HasMany(() => Boards)
+  boards: Boards[];
 }
