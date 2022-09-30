@@ -26,6 +26,10 @@ module.exports = {
           key: 'id',
         },
       },
+      views_count: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, ShutdownSignal } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { BoardHashTags } from './models/board_hashTags.model';
 import { HashTags } from './models/hashTag.model';
@@ -209,5 +209,17 @@ export class BoardsService {
     })
 
     return boards
+  }
+
+  async getOne(boardId: number) {
+    const board = await this.boardModel.findByPk(boardId)
+    await this.boardModel.update({ views_count: board.views_count + 1 }, { where: { id: boardId } })
+
+    const newBoard = await this.boardModel.findByPk(boardId, {
+      attributes: {
+        exclude: ["user_id", "createdAt", "updatedAt", "deletedAt"]
+      }
+    })
+    return newBoard
   }
 }

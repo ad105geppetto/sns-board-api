@@ -19,6 +19,9 @@ export class Boards extends Model<Boards> {
   @ForeignKey(() => Users)
   user_id: number;
 
+  @Column
+  views_count: number;
+
   @BelongsToMany(() => HashTags, () => BoardHashTags)
   hashTags: HashTags[]
 

@@ -91,5 +91,16 @@ export class BoardsController {
       throw new BadRequestException(error.message)
     }
   }
+
+  @Get(":boardId")
+  async getOne(@Param("boardId") boardId: number) {
+    try {
+      const data = await this.BoardsService.getOne(boardId)
+
+      return data
+    } catch (error) {
+      throw new BadRequestException(error.message)
+    }
+  }
 }
 
