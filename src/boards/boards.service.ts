@@ -7,6 +7,8 @@ import { Sequelize } from 'sequelize-typescript';
 import { BoardInfoDTO } from './dto/boardInfo.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateBoardInfoDTO } from './dto/updateBoardInfo.dto';
+import { Op } from 'sequelize';
+import { QueryInfoDTO } from './dto/queryInfo.dto';
 
 @Injectable()
 export class BoardsService {
@@ -23,12 +25,16 @@ export class BoardsService {
 
     return await this.sequelize.transaction(async (transaction) => {
       const transactionHost = { transaction: transaction };
-      const board = await this.boardModel.create({ ...boardInfo, user_id: tokenInfo.id },
+      const { title, content } = boardInfo
+      const board = await this.boardModel.create(
         {
-          raw: true,
-          ...transactionHost
-        }
-      );
+          title: title,
+          content: content,
+          user_id: tokenInfo.id
+        }, {
+        raw: true,
+        ...transactionHost
+      });
 
       const hashTags = await Promise.all(boardInfo.hashTags.map(async (hashTag) => {
         const newHashTag = await this.hashTagsModel.findOrCreate({
@@ -110,7 +116,14 @@ export class BoardsService {
 
     return await this.sequelize.transaction(async (transaction) => {
       const transactionHost = { transaction: transaction };
-      await this.boardModel.update(boardInfo, { where: { id: boardId }, ...transactionHost })
+      const { title, content } = boardInfo
+      await this.boardModel.update({
+        title: title,
+        content: content
+      }, {
+        where: { id: boardId },
+        ...transactionHost
+      })
       const newBoard = await this.boardModel.findByPk(boardId, {
         attributes: {
           exclude: ["user_id", "createdAt", "updatedAt", "deletedAt"]
@@ -160,5 +173,41 @@ export class BoardsService {
     })
 
     return { id: boardId }
+  }
+
+  async getAll(queryInfo: QueryInfoDTO) {
+    const { search, orderBy, filter, page, limit } = queryInfo
+
+    const boards = await this.boardModel.findAll({
+      limit: 10,
+      where: {
+        [Op.or]: [
+          {
+            title: { [Op.like]: "%" + search + "%" }
+          }
+        ]
+      },
+      order: [["title", orderBy]],
+      attributes: {
+        exclude: ["user_id", "createdAt", "updatedAt", "deletedAt"]
+      },
+      include: [
+        {
+          model: this.hashTagsModel,
+          where: {
+            [Op.or]: [
+              {
+                name: { [Op.like]: `#${filter}` }
+              }
+            ]
+          },
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"]
+          },
+        },
+      ]
+    })
+
+    return boards
   }
 }

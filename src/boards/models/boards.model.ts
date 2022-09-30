@@ -1,4 +1,4 @@
-import { Column, Model, Table, HasMany, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import { Column, Model, Table, BelongsToMany, BelongsTo, ForeignKey } from 'sequelize-typescript';
 import { Users } from 'src/users/users.model';
 import { BoardHashTags } from './board_hashTags.model';
 import { HashTags } from './hashTag.model';
@@ -19,8 +19,8 @@ export class Boards extends Model<Boards> {
   @ForeignKey(() => Users)
   user_id: number;
 
-  @HasMany(() => BoardHashTags)
-  boardHashTags: BoardHashTags[];
+  @BelongsToMany(() => HashTags, () => BoardHashTags)
+  hashTags: HashTags[]
 
   @BelongsTo(() => Users)
   users: Users

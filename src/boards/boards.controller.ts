@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Param, Headers, BadRequestException, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Param, Headers, BadRequestException, Patch, Delete, Get, Query } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardInfoDTO } from './dto/boardInfo.dto';
+import { QueryInfoDTO } from './dto/queryInfo.dto';
 import { UpdateBoardInfoDTO } from './dto/updateBoardInfo.dto';
 
 @Controller('boards')
@@ -73,6 +74,17 @@ export class BoardsController {
       }
 
       const data = await this.BoardsService.delete(boardId, Authorization)
+
+      return data
+    } catch (error) {
+      throw new BadRequestException(error.message)
+    }
+  }
+
+  @Get()
+  async getAll(@Query() queryInfo: QueryInfoDTO) {
+    try {
+      const data = await this.BoardsService.getAll(queryInfo)
 
       return data
     } catch (error) {

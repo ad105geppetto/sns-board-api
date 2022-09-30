@@ -15,10 +15,4 @@ export class BoardHashTags extends Model<BoardHashTags> {
   @Column
   @ForeignKey(() => HashTags)
   hashTag_id: number;
-
-  @BelongsTo(() => Boards)
-  boards: Boards
-
-  @BelongsTo(() => HashTags)
-  hashTags: HashTags
 }
