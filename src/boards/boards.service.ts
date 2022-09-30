@@ -23,7 +23,13 @@ export class BoardsService {
 
     return await this.sequelize.transaction(async (transaction) => {
       const transactionHost = { transaction: transaction };
-      const board = await this.boardModel.create({ ...boardInfo, user_id: tokenInfo.id }, transactionHost);
+      const board = await this.boardModel.create({ ...boardInfo, user_id: tokenInfo.id },
+        {
+          raw: true,
+          ...transactionHost
+        }
+      );
+
       const hashTags = await Promise.all(boardInfo.hashTags.map(async (hashTag) => {
         const newHashTag = await this.hashTagsModel.findOrCreate({
           where: { name: hashTag },
@@ -43,7 +49,7 @@ export class BoardsService {
         await this.boardHashTagModel.create({ board_id: board.id, hashTag_id: hashTag.id }, transactionHost);
       }))
 
-      return { board: board, hashTags: hashTags }
+      return board
     })
   }
 
