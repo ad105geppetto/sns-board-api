@@ -1,10 +1,10 @@
 <div align=center>
-<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=250&section=header&text=SNS%20게시글%20API%20서버&fontSize=45" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=250&section=header&text=🧩SNS%20게시글%20API%20서버🧩&fontSize=45" />
   </br>
   <b id=content>SNS 게시글 API 서버</b>
   </br></br>
   <h3>📚 STACKS</h3>
-  <img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=Nest&logoColor=white">
+  <img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=NestJS&logoColor=white">
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
   <img src="https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=Jest&logoColor=white">
   <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
@@ -27,6 +27,7 @@ MYSQL_USER= db 계정
 MYSQL_PASSWORD= db 패스워드
 MYSQL_DATABASE= db 이름
 MYSQL_PORT= db 포트 번호
+SECRET= jwt 시크릿 키
 ```
 
 ## 📌 앱 실행
@@ -45,7 +46,11 @@ $ npm run test:e2e
 
 ## 📌 DB 모델링
 
+![sns](https://user-images.githubusercontent.com/92367032/193233335-e4561980-1870-40af-a6b8-ea5c8db223b1.png)
+
 ## 📌 API 문서
+
+https://iris-feta-eb2.notion.site/6072d6b25ca341c495c59f516374e05b?v=7979a1842b02439ea9c855e19787bc89
 
 ## 📌 Commit Convention
 
