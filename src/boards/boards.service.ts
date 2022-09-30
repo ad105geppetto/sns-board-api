@@ -47,6 +47,49 @@ export class BoardsService {
     })
   }
 
+  async restore(boardId: number, Authorization: string) {
+    const tokenInfo = this.jwtService.verify(Authorization)
+    const board = await this.boardModel.findByPk(boardId, {
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "deletedAt"]
+      },
+      raw: true,
+      paranoid: false
+    })
+
+    if (tokenInfo.id !== board.user_id) {
+      throw new BadRequestException("해당 글의 작성자가 아닙니다.")
+    }
+
+    await this.boardModel.restore({ where: { id: boardId } })
+    const boardHashTags = await this.boardHashTagModel.findAll({
+      where: { board_id: boardId },
+      raw: true,
+      paranoid: false
+    })
+
+    boardHashTags.forEach(async () => {
+      await this.boardHashTagModel.restore({ where: { id: boardId } })
+    })
+    const storedBoard = await this.boardModel.findByPk(boardId, {
+      attributes: {
+        exclude: ["user_id", "createdAt", "updatedAt", "deletedAt"]
+      },
+      raw: true
+    })
+    const hashTags = await Promise.all(boardHashTags.map(async (boardHashTag) => {
+      const hashTag = await this.hashTagsModel.findByPk(
+        boardHashTag.hashTag_id, {
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "deletedAt"]
+        }
+      })
+
+      return hashTag
+    }))
+    return { ...storedBoard, hashTags: hashTags }
+  }
+
   async update(boardId: number, boardInfo: UpdateBoardInfoDTO, Authorization: string) {
     const tokenInfo = this.jwtService.verify(Authorization)
     const board = await this.boardModel.findByPk(boardId, {

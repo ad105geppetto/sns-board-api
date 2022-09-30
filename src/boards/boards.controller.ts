@@ -30,6 +30,22 @@ export class BoardsController {
     }
   }
 
+
+  @Patch(":boardId/restoration")
+  async restore(@Param("boardId") boardId: number, @Headers("Authorization") Authorization: string) {
+    try {
+      if (!Authorization) {
+        throw new BadRequestException("로그인해주세요.")
+      }
+
+      const data = await this.BoardsService.restore(boardId, Authorization)
+
+      return data
+    } catch (error) {
+      throw new BadRequestException(error.message)
+    }
+  }
+
   @Patch(":boardId")
   async update(
     @Param("boardId") boardId: number,
@@ -64,3 +80,4 @@ export class BoardsController {
     }
   }
 }
+
