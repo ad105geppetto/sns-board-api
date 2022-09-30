@@ -51,39 +51,46 @@ export class BoardsService {
     const tokenInfo = this.jwtService.verify(Authorization)
     const board = await this.boardModel.findByPk(boardId, {
       attributes: {
-        exclude: ["user_id", "createdAt", "updatedAt", "deletedAt"]
+        exclude: ["createdAt", "updatedAt", "deletedAt"]
       }, raw: true
     })
 
-    if (tokenInfo.id !== board.id) {
+    if (tokenInfo.id !== board.user_id) {
       throw new BadRequestException("해당 글의 작성자가 아닙니다.")
     }
 
-    await this.boardModel.update(boardInfo, { where: { id: boardId } })
-    const newBoard = await this.boardModel.findByPk(boardId, {
-      attributes: {
-        exclude: ["user_id", "createdAt", "updatedAt", "deletedAt"]
-      }, raw: true
-    })
-    const hashTags = await Promise.all(boardInfo.hashTags.map(async (hashTag) => {
-      const newHashTag = await this.hashTagsModel.findOrCreate({
-        where: { name: hashTag },
+    return await this.sequelize.transaction(async (transaction) => {
+      const transactionHost = { transaction: transaction };
+      await this.boardModel.update(boardInfo, { where: { id: boardId }, ...transactionHost })
+      const newBoard = await this.boardModel.findByPk(boardId, {
         attributes: {
-          exclude: ["createdAt", "updatedAt", "deletedAt"]
+          exclude: ["user_id", "createdAt", "updatedAt", "deletedAt"]
         },
-        raw: true
-      });
-      const id = newHashTag[0].id;
-      const name = newHashTag[0].name;
+        raw: true,
+        transaction
+      })
+      const hashTags = await Promise.all(boardInfo.hashTags.map(async (hashTag) => {
+        const newHashTag = await this.hashTagsModel.findOrCreate({
+          where: { name: hashTag },
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"]
+          },
+          raw: true,
+          ...transactionHost
+        });
+        const id = newHashTag[0].id;
+        const name = newHashTag[0].name;
 
-      return { id: id, name: name }
-    }))
+        return { id: id, name: name }
+      }))
 
-    await this.boardHashTagModel.destroy({ where: { board_id: boardId } })
-    await Promise.all(hashTags.map(async (hashTag) => {
-      await this.boardHashTagModel.create({ board_id: boardId, hashTag_id: hashTag.id });
-    }))
-    return { ...newBoard, hashTags: hashTags }
+      await this.boardHashTagModel.destroy({ where: { board_id: boardId }, ...transactionHost })
+      await Promise.all(hashTags.map(async (hashTag) => {
+        await this.boardHashTagModel.create({ board_id: boardId, hashTag_id: hashTag.id }, transactionHost);
+      }))
+
+      return { ...newBoard, hashTags: hashTags }
+    })
   }
 
   async delete(boardId: number, Authorization: string) {
