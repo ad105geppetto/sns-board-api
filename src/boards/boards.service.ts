@@ -6,6 +6,7 @@ import { Boards } from './models/boards.model';
 import { Sequelize } from 'sequelize-typescript';
 import { BoardInfoDTO } from './dto/boardInfo.dto';
 import { JwtService } from '@nestjs/jwt';
+import { UpdateBoardInfoDTO } from './dto/updateBoardInfo.dto';
 
 @Injectable()
 export class BoardsService {
@@ -44,5 +45,44 @@ export class BoardsService {
 
       return { board: board, hashTags: hashTags }
     })
+  }
+
+  async update(boardId: number, boardInfo: UpdateBoardInfoDTO, Authorization: string) {
+    const tokenInfo = this.jwtService.verify(Authorization)
+    const board = await this.boardModel.findByPk(boardId, {
+      attributes: {
+        exclude: ["user_id", "createdAt", "updatedAt", "deletedAt"]
+      }, raw: true
+    })
+
+    if (tokenInfo.id !== board.id) {
+      throw new BadRequestException("해당 글의 작성자가 아닙니다.")
+    }
+
+    await this.boardModel.update(boardInfo, { where: { id: boardId } })
+    const newBoard = await this.boardModel.findByPk(boardId, {
+      attributes: {
+        exclude: ["user_id", "createdAt", "updatedAt", "deletedAt"]
+      }, raw: true
+    })
+    const hashTags = await Promise.all(boardInfo.hashTags.map(async (hashTag) => {
+      const newHashTag = await this.hashTagsModel.findOrCreate({
+        where: { name: hashTag },
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "deletedAt"]
+        },
+        raw: true
+      });
+      const id = newHashTag[0].id;
+      const name = newHashTag[0].name;
+
+      return { id: id, name: name }
+    }))
+
+    await this.boardHashTagModel.destroy({ where: { board_id: boardId } })
+    await Promise.all(hashTags.map(async (hashTag) => {
+      await this.boardHashTagModel.create({ board_id: boardId, hashTag_id: hashTag.id });
+    }))
+    return { ...newBoard, hashTags: hashTags }
   }
 }

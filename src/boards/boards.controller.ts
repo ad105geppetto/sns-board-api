@@ -1,6 +1,7 @@
-import { Controller, Post, Body, Headers, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Body, Param, Headers, BadRequestException, Patch } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardInfoDTO } from './dto/boardInfo.dto';
+import { UpdateBoardInfoDTO } from './dto/updateBoardInfo.dto';
 
 @Controller('boards')
 export class BoardsController {
@@ -22,6 +23,25 @@ export class BoardsController {
       })
 
       const data = await this.BoardsService.create(boardInfo, Authorization)
+
+      return data
+    } catch (error) {
+      throw new BadRequestException(error.message)
+    }
+  }
+
+  @Patch(":boardId")
+  async update(
+    @Param("boardId") boardId: number,
+    @Body() boardInfo: UpdateBoardInfoDTO,
+    @Headers("Authorization") Authorization: string
+  ) {
+    try {
+      if (!Authorization) {
+        throw new BadRequestException("로그인해주세요.")
+      }
+
+      const data = await this.BoardsService.update(boardId, boardInfo, Authorization)
 
       return data
     } catch (error) {
