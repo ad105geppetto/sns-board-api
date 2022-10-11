@@ -26,17 +26,22 @@ export class BoardsService {
     return await this.sequelize.transaction(async (transaction) => {
       const transactionHost = { transaction: transaction };
       const { title, content } = boardInfo;
-      const board = await this.boardModel.create(
-        {
-          title: title,
-          content: content,
-          user_id: tokenInfo.id,
-        },
-        {
-          raw: true,
-          ...transactionHost,
-        },
-      );
+      const board = await this.boardModel
+        .create(
+          {
+            title: title,
+            content: content,
+            user_id: tokenInfo.id,
+          },
+          {
+            plain: true,
+            ...transactionHost,
+          },
+        )
+        .then((resultEntity) => {
+          const dataObj = resultEntity.get({ plain: true });
+          return dataObj;
+        });
 
       const hashTags = await Promise.all(
         boardInfo.hashTags.map(async (hashTag) => {
@@ -64,7 +69,9 @@ export class BoardsService {
         }),
       );
 
-      return board;
+      const newHashTag = hashTags.map((hashTag) => hashTag.name);
+
+      return { ...board, hashTags: newHashTag };
     });
   }
 
