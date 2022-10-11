@@ -1,12 +1,19 @@
-import { Column, Model, Table, BelongsToMany, BelongsTo, ForeignKey } from 'sequelize-typescript';
-import { Users } from '../../users/users.model';
-import { BoardHashTags } from './board_hashTags.model';
-import { HashTags } from './hashTag.model';
+import {
+  Column,
+  Model,
+  Table,
+  BelongsToMany,
+  BelongsTo,
+  ForeignKey,
+} from "sequelize-typescript";
+import { Users } from "../../users/users.model";
+import { BoardHashTags } from "./board_hashTags.model";
+import { HashTags } from "./hashTag.model";
 
 @Table({
   paranoid: true,
   timestamps: true,
-  tableName: "boards"
+  tableName: "boards",
 })
 export class Boards extends Model<Boards> {
   @Column
@@ -23,8 +30,8 @@ export class Boards extends Model<Boards> {
   views_count: number;
 
   @BelongsToMany(() => HashTags, () => BoardHashTags)
-  hashTags: HashTags[]
+  hashTags: HashTags[];
 
   @BelongsTo(() => Users)
-  users: Users
+  users: Users;
 }

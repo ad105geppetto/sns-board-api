@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return await queryInterface.createTable('boards', {
+    return await queryInterface.createTable("boards", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -22,8 +22,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'users',
-          key: 'id',
+          model: "users",
+          key: "id",
         },
       },
       views_count: {
@@ -45,7 +45,7 @@ module.exports = {
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
-    return await queryInterface.dropTable('boards');
+  down: async (queryInterface) => {
+    return await queryInterface.dropTable("boards");
   },
 };

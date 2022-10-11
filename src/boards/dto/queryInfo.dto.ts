@@ -18,5 +18,4 @@ class QueryDTO {
   readonly limit: number;
 }
 
-
-export class QueryInfoDTO extends PartialType(QueryDTO) { }
+export class QueryInfoDTO extends PartialType(QueryDTO) {}

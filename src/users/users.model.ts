@@ -1,10 +1,10 @@
-import { Column, Model, Table, HasMany } from 'sequelize-typescript';
-import { Boards } from '../boards/models/boards.model';
+import { Column, Model, Table, HasMany } from "sequelize-typescript";
+import { Boards } from "../boards/models/boards.model";
 
 @Table({
   paranoid: true,
   timestamps: true,
-  tableName: "users"
+  tableName: "users",
 })
 export class Users extends Model<Users> {
   @Column
