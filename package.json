@@ -9,9 +9,9 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "prestart": "npx sequelize db:drop; npx sequelize db:create; npx sequelize db:migrate; npx sequelize db:seed:all",
+    "prestart": "npx sequelize db:drop; npx sequelize db:create; npx sequelize db:migrate",
     "start": "nest start",
-    "prestart:dev": "npx sequelize db:drop; npx sequelize db:create; npx sequelize db:migrate; npx sequelize db:seed:all",
+    "prestart:dev": "npx sequelize db:drop; npx sequelize db:create; npx sequelize db:migrate",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -20,7 +20,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "pretest:e2e": "npx sequelize db:drop; npx sequelize db:create; npx sequelize db:migrate; npx sequelize db:seed:all",
+    "pretest:e2e": "npx sequelize db:drop; npx sequelize db:create; npx sequelize db:migrate",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
