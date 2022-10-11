@@ -38,19 +38,35 @@ describe("AppController (e2e)", () => {
         const response = await request(app.getHttpServer())
           .post("/signup")
           .send({
-            email: "difkendiso",
+            email: "",
           });
         expect(response.statusCode).toBe(400);
       });
     });
     describe("POST /login", () => {
-      it("로그인 요청을 성공하면, 상태코드 201을 반환합니다.", () => {
-        return request(app.getHttpServer())
+      it("로그인 요청을 성공하면, 상태코드 201을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer())
           .post("/login")
           .send({
             email: "gildong@naver.com",
-          })
-          .expect(201);
+          });
+        expect(response.statusCode).toBe(201);
+      });
+      it("로그인 요청을 실패하면, 상태코드 404을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer())
+          .post("/login")
+          .send({
+            email: "worng@naver.com",
+          });
+        expect(response.statusCode).toBe(404);
+      });
+      it("빈 문자열로 로그인 요청을 하면, 상태코드 400을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer())
+          .post("/login")
+          .send({
+            email: "",
+          });
+        expect(response.statusCode).toBe(400);
       });
     });
   });
