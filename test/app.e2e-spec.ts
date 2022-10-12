@@ -299,11 +299,11 @@ describe("AppController (e2e)", () => {
         expect(response.body).toStrictEqual({ id: 1 });
       });
       it("로그인하지 않고 특정 게시글을 삭제한다면, 상태코드 400을 반환합니다.", async () => {
-        const response = await request(app.getHttpServer()).patch(`/boards/1`);
+        const response = await request(app.getHttpServer()).delete(`/boards/1`);
         expect(response.statusCode).toBe(400);
       });
       it("특정 게시글 삭제을 실패하면, 상태코드 400을 반환합니다.", async () => {
-        const response = await request(app.getHttpServer()).patch(
+        const response = await request(app.getHttpServer()).delete(
           `/boards/000`,
         );
         expect(response.statusCode).toBe(400);
