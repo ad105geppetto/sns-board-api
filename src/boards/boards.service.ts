@@ -3,10 +3,7 @@ import { InjectModel } from "@nestjs/sequelize";
 import { BoardHashTags } from "./models/board_hashTags.model";
 import { HashTags } from "./models/hashTag.model";
 import { Boards } from "./models/boards.model";
-import {
-  BeforeFindAfterExpandIncludeAll,
-  Sequelize,
-} from "sequelize-typescript";
+import { Sequelize } from "sequelize-typescript";
 import { BoardInfoDTO } from "./dto/boardInfo.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UpdateBoardInfoDTO } from "./dto/updateBoardInfo.dto";
@@ -256,7 +253,6 @@ export class BoardsService {
     const { search, orderBy, filter, page, limit } = queryInfo;
 
     if (!search && !orderBy && !filter) {
-      console.log({ page, limit });
       const aaa = await this.boardModel.findAll({
         offset: page ? (page - 1) * limit : 0,
         limit: limit ? limit : 10,
