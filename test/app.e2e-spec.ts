@@ -249,6 +249,21 @@ describe("AppController (e2e)", () => {
     });
   });
 
+  describe("GET /boards/:id", () => {
+    it("특정 게시글을 조회한다면, 상태코드 200을 반환합니다.", async () => {
+      const response = await request(app.getHttpServer()).get(
+        encodeURI("/boards/1"),
+      );
+      expect(response.statusCode).toBe(200);
+      expect(response.body.title).toBe("오늘도 열공!!");
+      expect(response.body.content).toBe("주말이 뭐죠??");
+    });
+    it("특정 게시글 조회를 실패하면, 상태코드 400을 반환합니다.", async () => {
+      const response = await request(app.getHttpServer()).get(`/boards/000`);
+      expect(response.statusCode).toBe(400);
+    });
+  });
+
   afterAll(async () => {
     await app.close();
   });
