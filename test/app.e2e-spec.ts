@@ -19,6 +19,9 @@ describe("AppController (e2e)", () => {
         whitelist: true,
         forbidNonWhitelisted: true,
         transform: true,
+        transformOptions: {
+          enableImplicitConversion: true,
+        },
       }),
     );
     await app.init();
@@ -181,7 +184,7 @@ describe("AppController (e2e)", () => {
     });
     it("모든 게시글을 검색/정렬/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
       const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?page=1&limit=20"),
+        encodeURI("/boards?search=오늘도&orderBy=desc&page=1&limit=20"),
       );
       expect(response.statusCode).toBe(200);
       expect(Array.isArray(response.body)).toBeTruthy();
@@ -199,7 +202,7 @@ describe("AppController (e2e)", () => {
     });
     it("모든 게시글을 정렬/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
       const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?orderBy=desc&filter=주말"),
+        encodeURI("/boards?orderBy=desc&filter=주말&page=1&limit=20"),
       );
       expect(response.statusCode).toBe(200);
       expect(Array.isArray(response.body)).toBeTruthy();
@@ -217,7 +220,7 @@ describe("AppController (e2e)", () => {
     });
     it("모든 게시글을 검색/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
       const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?search=오늘도&filter=주말"),
+        encodeURI("/boards?search=오늘도&filter=주말&page=1&limit=20"),
       );
       expect(response.statusCode).toBe(200);
       expect(Array.isArray(response.body)).toBeTruthy();
@@ -235,7 +238,9 @@ describe("AppController (e2e)", () => {
     });
     it("모든 게시글을 검색/정렬/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
       const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?search=오늘도&orderBy=desc&filter=주말"),
+        encodeURI(
+          "/boards?search=오늘도&orderBy=desc&filter=주말&page=1&limit=20",
+        ),
       );
       expect(response.statusCode).toBe(200);
       expect(Array.isArray(response.body)).toBeTruthy();
