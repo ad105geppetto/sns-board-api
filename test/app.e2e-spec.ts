@@ -125,142 +125,142 @@ describe("AppController (e2e)", () => {
         expect(response.statusCode).toBe(400);
       });
     });
-  });
 
-  describe("GET /boards", () => {
-    it("모든 게시글을 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
+    describe("GET /boards", () => {
+      it("모든 게시글을 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 검색 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?search=오늘도"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 정렬 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?orderBy=desc"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?filter=주말"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글의 수를 조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?page=1&limit=20"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 검색/정렬 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?search=오늘도&orderBy=desc"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 검색/정렬/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?search=오늘도&orderBy=desc&page=1&limit=20"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 정렬/필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?orderBy=desc&filter=주말"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 정렬/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?orderBy=desc&filter=주말&page=1&limit=20"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 검색/필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?search=오늘도&filter=주말"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 검색/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?search=오늘도&filter=주말&page=1&limit=20"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 검색/정렬/필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards?search=오늘도&orderBy=desc&filter=주말"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
+      it("모든 게시글을 검색/정렬/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI(
+            "/boards?search=오늘도&orderBy=desc&filter=주말&page=1&limit=20",
+          ),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBeTruthy();
+        expect(response.body[0].title).toBeDefined();
+        expect(response.body[0].content).toBeDefined();
+      });
     });
-    it("모든 게시글을 검색 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?search=오늘도"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글을 정렬 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?orderBy=desc"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글을 필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?filter=주말"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글의 수를 조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?page=1&limit=20"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글을 검색/정렬 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?search=오늘도&orderBy=desc"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글을 검색/정렬/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?search=오늘도&orderBy=desc&page=1&limit=20"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글을 정렬/필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?orderBy=desc&filter=주말"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글을 정렬/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?orderBy=desc&filter=주말&page=1&limit=20"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글을 검색/필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?search=오늘도&filter=주말"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글을 검색/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?search=오늘도&filter=주말&page=1&limit=20"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글을 검색/정렬/필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards?search=오늘도&orderBy=desc&filter=주말"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-    it("모든 게시글을 검색/정렬/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI(
-          "/boards?search=오늘도&orderBy=desc&filter=주말&page=1&limit=20",
-        ),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(Array.isArray(response.body)).toBeTruthy();
-      expect(response.body[0].title).toBeDefined();
-      expect(response.body[0].content).toBeDefined();
-    });
-  });
 
-  describe("GET /boards/:id", () => {
-    it("특정 게시글을 조회한다면, 상태코드 200을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(
-        encodeURI("/boards/1"),
-      );
-      expect(response.statusCode).toBe(200);
-      expect(response.body.title).toBe("오늘도 열공!!");
-      expect(response.body.content).toBe("주말이 뭐죠??");
-    });
-    it("특정 게시글 조회를 실패하면, 상태코드 400을 반환합니다.", async () => {
-      const response = await request(app.getHttpServer()).get(`/boards/000`);
-      expect(response.statusCode).toBe(400);
+    describe("GET /boards/:id", () => {
+      it("특정 게시글을 조회한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(
+          encodeURI("/boards/1"),
+        );
+        expect(response.statusCode).toBe(200);
+        expect(response.body.title).toBe("오늘도 열공!!");
+        expect(response.body.content).toBe("주말이 뭐죠??");
+      });
+      it("특정 게시글 조회를 실패하면, 상태코드 400을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).get(`/boards/000`);
+        expect(response.statusCode).toBe(400);
+      });
     });
   });
 
