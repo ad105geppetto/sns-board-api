@@ -162,6 +162,36 @@ export class BoardsService {
         raw: true,
         transaction,
       });
+
+      if (!boardInfo.hashTags) {
+        const boardHashTags = await this.boardHashTagModel.findAll({
+          where: { board_id: boardId },
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+          raw: true,
+          ...transactionHost,
+        });
+
+        const hashTags = await Promise.all(
+          boardHashTags.map(async (boardHashTag) => {
+            const data = await this.hashTagsModel.findByPk(
+              boardHashTag.hashTag_id,
+              {
+                attributes: {
+                  exclude: ["id", "createdAt", "updatedAt", "deletedAt"],
+                },
+                raw: true,
+                ...transactionHost,
+              },
+            );
+            return data.name;
+          }),
+        );
+
+        return { ...newBoard, hashTags };
+      }
+
       const hashTags = await Promise.all(
         boardInfo.hashTags.map(async (hashTag) => {
           const newHashTag = await this.hashTagsModel.findOrCreate({
@@ -192,7 +222,9 @@ export class BoardsService {
         }),
       );
 
-      return { ...newBoard, hashTags: hashTags };
+      const newHashTag = hashTags.map((hashTag) => hashTag.name);
+
+      return { ...newBoard, hashTags: newHashTag };
     });
   }
 
