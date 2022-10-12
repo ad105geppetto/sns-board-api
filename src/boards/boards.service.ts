@@ -111,12 +111,12 @@ export class BoardsService {
           boardHashTag.hashTag_id,
           {
             attributes: {
-              exclude: ["createdAt", "updatedAt", "deletedAt"],
+              exclude: ["id", "createdAt", "updatedAt", "deletedAt"],
             },
           },
         );
 
-        return hashTag;
+        return hashTag.name;
       }),
     );
     return { ...storedBoard, hashTags: hashTags };
