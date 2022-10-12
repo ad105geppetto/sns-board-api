@@ -309,6 +309,27 @@ describe("AppController (e2e)", () => {
         expect(response.statusCode).toBe(400);
       });
     });
+
+    describe("PATCH /boards/:id/restoration", () => {
+      it("삭제된 특정 게시글을 복원한다면, 상태코드 200을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer())
+          .patch("/boards/1/restoration")
+          .set("Authorization", accessToken);
+        expect(response.statusCode).toBe(200);
+      });
+      it("로그인하지 않고 특정 게시글을 복원한다면, 상태코드 400을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).patch(
+          `/boards/1/restoration`,
+        );
+        expect(response.statusCode).toBe(400);
+      });
+      it("특정 게시글 복원을 실패하면, 상태코드 400을 반환합니다.", async () => {
+        const response = await request(app.getHttpServer()).patch(
+          `/boards/000/restoration`,
+        );
+        expect(response.statusCode).toBe(400);
+      });
+    });
   });
 
   afterAll(async () => {
