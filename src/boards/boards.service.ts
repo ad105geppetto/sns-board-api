@@ -3,7 +3,10 @@ import { InjectModel } from "@nestjs/sequelize";
 import { BoardHashTags } from "./models/board_hashTags.model";
 import { HashTags } from "./models/hashTag.model";
 import { Boards } from "./models/boards.model";
-import { Sequelize } from "sequelize-typescript";
+import {
+  BeforeFindAfterExpandIncludeAll,
+  Sequelize,
+} from "sequelize-typescript";
 import { BoardInfoDTO } from "./dto/boardInfo.dto";
 import { JwtService } from "@nestjs/jwt";
 import { UpdateBoardInfoDTO } from "./dto/updateBoardInfo.dto";
@@ -220,8 +223,120 @@ export class BoardsService {
   async getAll(queryInfo: QueryInfoDTO) {
     const { search, orderBy, filter, page, limit } = queryInfo;
 
+    if (!search && !orderBy && !filter) {
+      console.log({ page, limit });
+      const aaa = await this.boardModel.findAll({
+        offset: page ? (page - 1) * limit : 0,
+        limit: limit ? limit : 10,
+      });
+      return aaa;
+    }
+    if (search && !orderBy && !filter) {
+      return await this.boardModel.findAll({
+        where: {
+          [Op.or]: [
+            {
+              title: { [Op.like]: "%" + search + "%" },
+            },
+          ],
+        },
+        offset: page ? (page - 1) * limit : 0,
+        limit: limit ? limit : 10,
+      });
+    }
+    if (!search && orderBy && !filter) {
+      return await this.boardModel.findAll({
+        order: [["title", orderBy]],
+        offset: page ? (page - 1) * limit : 0,
+        limit: limit ? limit : 10,
+      });
+    }
+    if (!search && !orderBy && filter) {
+      return await this.boardModel.findAll({
+        include: [
+          {
+            model: this.hashTagsModel,
+            where: {
+              [Op.or]: [
+                {
+                  name: { [Op.like]: `#${filter}` },
+                },
+              ],
+            },
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            },
+          },
+        ],
+        offset: page ? (page - 1) * limit : 0,
+        limit: limit ? limit : 10,
+      });
+    }
+    if (search && orderBy && !filter) {
+      return await this.boardModel.findAll({
+        where: {
+          [Op.or]: [
+            {
+              title: { [Op.like]: "%" + search + "%" },
+            },
+          ],
+        },
+        order: [["title", orderBy]],
+        offset: page ? (page - 1) * limit : 0,
+        limit: limit ? limit : 10,
+      });
+    }
+    if (!search && orderBy && filter) {
+      return await this.boardModel.findAll({
+        order: [["title", orderBy]],
+        include: [
+          {
+            model: this.hashTagsModel,
+            where: {
+              [Op.or]: [
+                {
+                  name: { [Op.like]: `#${filter}` },
+                },
+              ],
+            },
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            },
+          },
+        ],
+        offset: page ? (page - 1) * limit : 0,
+        limit: limit ? limit : 10,
+      });
+    }
+    if (search && !orderBy && filter) {
+      return await this.boardModel.findAll({
+        where: {
+          [Op.or]: [
+            {
+              title: { [Op.like]: "%" + search + "%" },
+            },
+          ],
+        },
+        include: [
+          {
+            model: this.hashTagsModel,
+            where: {
+              [Op.or]: [
+                {
+                  name: { [Op.like]: `#${filter}` },
+                },
+              ],
+            },
+            attributes: {
+              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            },
+          },
+        ],
+        offset: page ? (page - 1) * limit : 0,
+        limit: limit ? limit : 10,
+      });
+    }
     const boards = await this.boardModel.findAll({
-      limit: 10,
       where: {
         [Op.or]: [
           {
@@ -248,6 +363,8 @@ export class BoardsService {
           },
         },
       ],
+      offset: page ? (page - 1) * limit : 0,
+      limit: limit ? limit : 10,
     });
 
     return boards;
