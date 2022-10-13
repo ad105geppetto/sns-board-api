@@ -9,6 +9,7 @@ import { JwtService } from "@nestjs/jwt";
 import { UpdateBoardInfoDTO } from "./dto/updateBoardInfo.dto";
 import { Op } from "sequelize";
 import { QueryInfoDTO } from "./dto/queryInfo.dto";
+import { Users } from "../users/users.model";
 
 @Injectable()
 export class BoardsService {
@@ -250,17 +251,45 @@ export class BoardsService {
   }
 
   async getAll(queryInfo: QueryInfoDTO) {
-    const { search, orderBy, filter, page, limit } = queryInfo;
+    const { search, sortBy, orderBy, filter, page, limit } = queryInfo;
 
-    if (!search && !orderBy && !filter) {
-      const aaa = await this.boardModel.findAll({
+    if (!search && !sortBy && !filter) {
+      const boards = await this.boardModel.findAll({
+        attributes: {
+          exclude: ["user_id", "content", "deletedAt"],
+        },
+        include: [
+          {
+            model: Users,
+            attributes: ["email"],
+          },
+          {
+            model: HashTags,
+            attributes: ["name"],
+            through: {
+              attributes: [],
+            },
+          },
+        ],
         offset: page ? (page - 1) * limit : 0,
         limit: limit ? limit : 10,
       });
-      return aaa;
+
+      const result = boards.map((board) => {
+        const data = board.get({ plain: true });
+        const author = data.users.email;
+
+        delete data.users;
+
+        const newHashTags = data.hashTags.map((result) => result.name);
+
+        return { ...data, author: author, hashTags: newHashTags };
+      });
+
+      return result;
     }
-    if (search && !orderBy && !filter) {
-      return await this.boardModel.findAll({
+    if (search && !sortBy && !filter) {
+      const boards = await this.boardModel.findAll({
         where: {
           [Op.or]: [
             {
@@ -268,40 +297,123 @@ export class BoardsService {
             },
           ],
         },
-        offset: page ? (page - 1) * limit : 0,
-        limit: limit ? limit : 10,
-      });
-    }
-    if (!search && orderBy && !filter) {
-      return await this.boardModel.findAll({
-        order: [["title", orderBy]],
-        offset: page ? (page - 1) * limit : 0,
-        limit: limit ? limit : 10,
-      });
-    }
-    if (!search && !orderBy && filter) {
-      return await this.boardModel.findAll({
+        attributes: {
+          exclude: ["user_id", "content", "deletedAt"],
+        },
         include: [
           {
-            model: this.hashTagsModel,
-            where: {
-              [Op.or]: [
-                {
-                  name: { [Op.like]: `#${filter}` },
-                },
-              ],
-            },
-            attributes: {
-              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            model: Users,
+            attributes: ["email"],
+          },
+          {
+            model: HashTags,
+            attributes: ["name"],
+            through: {
+              attributes: [],
             },
           },
         ],
         offset: page ? (page - 1) * limit : 0,
         limit: limit ? limit : 10,
       });
+
+      const result = boards.map((board) => {
+        const data = board.get({ plain: true });
+        const author = data.users.email;
+
+        delete data.users;
+
+        const newHashTags = data.hashTags.map((result) => result.name);
+
+        return { ...data, author: author, hashTags: newHashTags };
+      });
+
+      return result;
     }
-    if (search && orderBy && !filter) {
-      return await this.boardModel.findAll({
+    if (!search && sortBy && !filter) {
+      const boards = await this.boardModel.findAll({
+        attributes: {
+          exclude: ["user_id", "content", "deletedAt"],
+        },
+        include: [
+          {
+            model: Users,
+            attributes: ["email"],
+          },
+          {
+            model: HashTags,
+            attributes: ["name"],
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+        order: [[sortBy ? sortBy : "ceatedAt", orderBy ? orderBy : "asc"]],
+        offset: page ? (page - 1) * limit : 0,
+        limit: limit ? limit : 10,
+      });
+
+      const result = boards.map((board) => {
+        const data = board.get({ plain: true });
+        const author = data.users.email;
+
+        delete data.users;
+
+        const newHashTags = data.hashTags.map((result) => result.name);
+
+        return { ...data, author: author, hashTags: newHashTags };
+      });
+
+      return result;
+    }
+    if (!search && !sortBy && filter) {
+      const boards = await this.boardModel.findAll({
+        attributes: {
+          exclude: ["user_id", "content", "deletedAt"],
+        },
+        include: [
+          {
+            model: Users,
+            attributes: ["email"],
+          },
+          {
+            model: HashTags,
+            attributes: ["name"],
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+        offset: page ? (page - 1) * limit : 0,
+        limit: limit ? limit : 10,
+      });
+
+      const filteredBoards = boards.filter((board) => {
+        const data = board.get({ plain: true });
+        const result = data.hashTags.filter(
+          (hashTag) => hashTag.name === `#${filter}`,
+        );
+
+        if (result[0]) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      const newBoards = filteredBoards.map((board) => {
+        const data = board.get({ plain: true });
+        const newBoard = { ...data };
+        const author = data.users.email;
+        delete newBoard.users;
+        const newHashTags = board.hashTags.map((result) => result.name);
+        return { ...newBoard, author: author, hashTags: newHashTags };
+      });
+
+      return newBoards;
+    }
+    if (search && sortBy && !filter) {
+      const boards = await this.boardModel.findAll({
         where: {
           [Op.or]: [
             {
@@ -309,35 +421,89 @@ export class BoardsService {
             },
           ],
         },
-        order: [["title", orderBy]],
+        attributes: {
+          exclude: ["user_id", "content", "deletedAt"],
+        },
+        include: [
+          {
+            model: Users,
+            attributes: ["email"],
+          },
+          {
+            model: HashTags,
+            attributes: ["name"],
+            through: {
+              attributes: [],
+            },
+          },
+        ],
+        order: [[sortBy ? sortBy : "ceatedAt", orderBy ? orderBy : "asc"]],
         offset: page ? (page - 1) * limit : 0,
         limit: limit ? limit : 10,
       });
+
+      const result = boards.map((board) => {
+        const data = board.get({ plain: true });
+        const author = data.users.email;
+
+        delete data.users;
+
+        const newHashTags = data.hashTags.map((result) => result.name);
+
+        return { ...data, author: author, hashTags: newHashTags };
+      });
+
+      return result;
     }
-    if (!search && orderBy && filter) {
-      return await this.boardModel.findAll({
-        order: [["title", orderBy]],
+    if (!search && sortBy && filter) {
+      const boards = await this.boardModel.findAll({
+        attributes: {
+          exclude: ["user_id", "content", "deletedAt"],
+        },
+        order: [[sortBy ? sortBy : "ceatedAt", orderBy ? orderBy : "asc"]],
         include: [
           {
-            model: this.hashTagsModel,
-            where: {
-              [Op.or]: [
-                {
-                  name: { [Op.like]: `#${filter}` },
-                },
-              ],
-            },
-            attributes: {
-              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            model: Users,
+            attributes: ["email"],
+          },
+          {
+            model: HashTags,
+            attributes: ["name"],
+            through: {
+              attributes: [],
             },
           },
         ],
         offset: page ? (page - 1) * limit : 0,
         limit: limit ? limit : 10,
       });
+
+      const filteredBoards = boards.filter((board) => {
+        const data = board.get({ plain: true });
+        const result = data.hashTags.filter(
+          (hashTag) => hashTag.name === `#${filter}`,
+        );
+
+        if (result[0]) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      const newBoards = filteredBoards.map((board) => {
+        const data = board.get({ plain: true });
+        const newBoard = { ...data };
+        const author = data.users.email;
+        delete newBoard.users;
+        const newHashTags = board.hashTags.map((result) => result.name);
+        return { ...newBoard, author: author, hashTags: newHashTags };
+      });
+
+      return newBoards;
     }
-    if (search && !orderBy && filter) {
-      return await this.boardModel.findAll({
+    if (search && !sortBy && filter) {
+      const boards = await this.boardModel.findAll({
         where: {
           [Op.or]: [
             {
@@ -345,25 +511,51 @@ export class BoardsService {
             },
           ],
         },
+        attributes: {
+          exclude: ["user_id", "content", "deletedAt"],
+        },
         include: [
           {
-            model: this.hashTagsModel,
-            where: {
-              [Op.or]: [
-                {
-                  name: { [Op.like]: `#${filter}` },
-                },
-              ],
-            },
-            attributes: {
-              exclude: ["createdAt", "updatedAt", "deletedAt"],
+            model: Users,
+            attributes: ["email"],
+          },
+          {
+            model: HashTags,
+            attributes: ["name"],
+            through: {
+              attributes: [],
             },
           },
         ],
         offset: page ? (page - 1) * limit : 0,
         limit: limit ? limit : 10,
       });
+
+      const filteredBoards = boards.filter((board) => {
+        const data = board.get({ plain: true });
+        const result = data.hashTags.filter(
+          (hashTag) => hashTag.name === `#${filter}`,
+        );
+
+        if (result[0]) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      const newBoards = filteredBoards.map((board) => {
+        const data = board.get({ plain: true });
+        const newBoard = { ...data };
+        const author = data.users.email;
+        delete newBoard.users;
+        const newHashTags = board.hashTags.map((result) => result.name);
+        return { ...newBoard, author: author, hashTags: newHashTags };
+      });
+
+      return newBoards;
     }
+
     const boards = await this.boardModel.findAll({
       where: {
         [Op.or]: [
@@ -372,22 +564,20 @@ export class BoardsService {
           },
         ],
       },
-      order: [["title", orderBy]],
       attributes: {
-        exclude: ["user_id", "createdAt", "updatedAt", "deletedAt"],
+        exclude: ["user_id", "content", "deletedAt"],
       },
+      order: [[sortBy ? sortBy : "ceatedAt", orderBy ? orderBy : "asc"]],
       include: [
         {
-          model: this.hashTagsModel,
-          where: {
-            [Op.or]: [
-              {
-                name: { [Op.like]: `#${filter}` },
-              },
-            ],
-          },
-          attributes: {
-            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          model: Users,
+          attributes: ["email"],
+        },
+        {
+          model: HashTags,
+          attributes: ["name"],
+          through: {
+            attributes: [],
           },
         },
       ],
@@ -395,7 +585,28 @@ export class BoardsService {
       limit: limit ? limit : 10,
     });
 
-    return boards;
+    const filteredBoards = boards.filter((board) => {
+      const data = board.get({ plain: true });
+      const result = data.hashTags.filter(
+        (hashTag) => hashTag.name === `#${filter}`,
+      );
+      if (result[0]) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    const newBoards = filteredBoards.map((board) => {
+      const data = board.get({ plain: true });
+      const newBoard = { ...data };
+      const author = data.users.email;
+      delete newBoard.users;
+      const newHashTags = board.hashTags.map((result) => result.name);
+      return { ...newBoard, author: author, hashTags: newHashTags };
+    });
+
+    return newBoards;
   }
 
   async getOne(boardId: number) {

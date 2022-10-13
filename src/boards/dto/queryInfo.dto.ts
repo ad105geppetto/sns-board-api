@@ -1,12 +1,21 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsNumber, IsString, IsIn } from "class-validator";
 import { PartialType } from "@nestjs/mapped-types";
+import { Transform } from "class-transformer";
 
 class QueryDTO {
   @IsString()
   readonly search: string;
 
+  @IsIn(["createdAt", "views_count"])
   @IsString()
-  readonly orderBy: string;
+  readonly sortBy: "createdAt" | "views_count";
+
+  @Transform((params) => {
+    return params.value.toLowerCase();
+  })
+  @IsIn(["desc", "asc"])
+  @IsString()
+  readonly orderBy: "desc" | "asc";
 
   @IsString()
   readonly filter: string;
