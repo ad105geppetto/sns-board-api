@@ -125,6 +125,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 검색 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -136,6 +137,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 정렬 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -147,6 +149,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -158,6 +161,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글의 수를 조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -169,6 +173,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 검색/정렬 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -180,6 +185,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 검색/정렬/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -191,6 +197,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 정렬/필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -202,6 +209,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 정렬/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -213,6 +221,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 검색/필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -224,6 +233,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 검색/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -235,6 +245,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 검색/정렬/필터 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -246,6 +257,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
     it("모든 게시글을 검색/정렬/필터/조정하여 조회한다면, 상태코드 200을 반환합니다.", async () => {
@@ -259,6 +271,7 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body[0].title).toBeDefined();
       expect(response.body[0].views_count).toBeDefined();
       expect(response.body[0].author).toBeDefined();
+      expect(response.body[0].likeCount).toBeDefined();
       expect(Array.isArray(response.body[0].hashTags)).toBeTruthy();
     });
   });
