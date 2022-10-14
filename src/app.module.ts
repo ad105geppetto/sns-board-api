@@ -8,6 +8,7 @@ import { BoardsModule } from "./boards/boards.module";
 import { Boards } from "./boards/models/boards.model";
 import { HashTags } from "./boards/models/hashTag.model";
 import { BoardHashTags } from "./boards/models/board_hashTags.model";
+import { Likes } from "./boards/models/likes.model";
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -20,7 +21,7 @@ dotenv.config();
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE,
-      models: [Users, Boards, HashTags, BoardHashTags],
+      models: [Users, Boards, HashTags, BoardHashTags, Likes],
       dialectOptions: {
         useUTC: false, //for reading from database
         dateStrings: true,

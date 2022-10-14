@@ -6,10 +6,11 @@ import { HashTags } from "./models/hashTag.model";
 import { BoardsController } from "./boards.controller";
 import { BoardsService } from "./boards.service";
 import { JwtModule } from "@nestjs/jwt";
+import { Likes } from "./models/likes.model";
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Boards, HashTags, BoardHashTags]),
+    SequelizeModule.forFeature([Boards, HashTags, BoardHashTags, Likes]),
     JwtModule.register({
       secret: process.env.SECRET,
       signOptions: { expiresIn: "1d" },

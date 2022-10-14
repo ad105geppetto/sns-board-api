@@ -9,6 +9,7 @@ import {
 import { Users } from "../../users/users.model";
 import { BoardHashTags } from "./board_hashTags.model";
 import { HashTags } from "./hashTag.model";
+import { Likes } from "./likes.model";
 
 @Table({
   paranoid: true,
@@ -34,4 +35,7 @@ export class Boards extends Model<Boards> {
 
   @BelongsTo(() => Users)
   users: Users;
+
+  @BelongsToMany(() => Users, () => Likes)
+  usersArr: Users[];
 }
