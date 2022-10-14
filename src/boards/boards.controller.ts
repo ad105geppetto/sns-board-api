@@ -125,4 +125,26 @@ export class BoardsController {
       throw new BadRequestException(error.message);
     }
   }
+
+  @Post("/:boardId/likes")
+  async convertLikeByUser(
+    @Param("boardId") boardId: number,
+    @Headers("Authorization")
+    Authorization: string,
+  ) {
+    try {
+      if (!Authorization) {
+        throw new BadRequestException("로그인해주세요.");
+      }
+      const data = await this.boardsService.convertLikeByUser(
+        boardId,
+        Authorization,
+      );
+
+      return data;
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException(error.message);
+    }
+  }
 }
