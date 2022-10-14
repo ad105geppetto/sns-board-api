@@ -5,8 +5,8 @@ import {
   HasMany,
   BelongsToMany,
 } from "sequelize-typescript";
-import { Likes } from "../boards/models/likes.model";
-import { Boards } from "../boards/models/boards.model";
+import { Likes } from "../../boards/entities/likes.entity";
+import { Boards } from "../../boards/entities/boards.entity";
 
 @Table({
   paranoid: true,

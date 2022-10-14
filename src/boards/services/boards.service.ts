@@ -1,16 +1,16 @@
 import { Injectable, BadRequestException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { BoardHashTags } from "./models/board_hashTags.model";
-import { HashTags } from "./models/hashTag.model";
-import { Boards } from "./models/boards.model";
+import { BoardHashTags } from "../entities/board_hashTags.entity";
+import { HashTags } from "../entities/hashTag.entity";
+import { Boards } from "../entities/boards.entity";
 import { Sequelize } from "sequelize-typescript";
-import { BoardInfoDTO } from "./dto/boardInfo.dto";
+import { BoardInfoDTO } from "../dto/boardInfo.dto";
 import { JwtService } from "@nestjs/jwt";
-import { UpdateBoardInfoDTO } from "./dto/updateBoardInfo.dto";
+import { UpdateBoardInfoDTO } from "../dto/updateBoardInfo.dto";
 import { Op } from "sequelize";
-import { QueryInfoDTO } from "./dto/queryInfo.dto";
-import { Users } from "../users/users.model";
-import { Likes } from "./models/likes.model";
+import { QueryInfoDTO } from "../dto/queryInfo.dto";
+import { Users } from "../../users/entities/users.entity";
+import { Likes } from "../entities/likes.entity";
 
 @Injectable()
 export class BoardsService {

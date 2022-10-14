@@ -11,10 +11,10 @@ import {
   Query,
   HttpCode,
 } from "@nestjs/common";
-import { BoardsService } from "./boards.service";
-import { BoardInfoDTO } from "./dto/boardInfo.dto";
-import { QueryInfoDTO } from "./dto/queryInfo.dto";
-import { UpdateBoardInfoDTO } from "./dto/updateBoardInfo.dto";
+import { BoardsService } from "../services/boards.service";
+import { BoardInfoDTO } from "../dto/boardInfo.dto";
+import { QueryInfoDTO } from "../dto/queryInfo.dto";
+import { UpdateBoardInfoDTO } from "../dto/updateBoardInfo.dto";
 
 @Controller("boards")
 export class BoardsController {

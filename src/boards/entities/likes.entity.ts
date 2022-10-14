@@ -1,6 +1,6 @@
 import { Column, Model, Table, ForeignKey } from "sequelize-typescript";
-import { Users } from "../../users/users.model";
-import { Boards } from "./boards.model";
+import { Users } from "../../users/entities/users.entity";
+import { Boards } from "./boards.entity";
 
 @Table({
   paranoid: true,

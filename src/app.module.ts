@@ -1,14 +1,12 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
 import { SequelizeModule } from "@nestjs/sequelize";
-import { AppService } from "./app.service";
 import { UsersModule } from "./users/users.module";
-import { Users } from "./users/users.model";
+import { Users } from "./users/entities/users.entity";
 import { BoardsModule } from "./boards/boards.module";
-import { Boards } from "./boards/models/boards.model";
-import { HashTags } from "./boards/models/hashTag.model";
-import { BoardHashTags } from "./boards/models/board_hashTags.model";
-import { Likes } from "./boards/models/likes.model";
+import { Boards } from "./boards/entities/boards.entity";
+import { HashTags } from "./boards/entities/hashTag.entity";
+import { BoardHashTags } from "./boards/entities/board_hashTags.entity";
+import { Likes } from "./boards/entities/likes.entity";
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -33,7 +31,7 @@ dotenv.config();
     UsersModule,
     BoardsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
