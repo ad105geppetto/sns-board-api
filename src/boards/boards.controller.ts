@@ -9,6 +9,7 @@ import {
   Delete,
   Get,
   Query,
+  HttpCode,
 } from "@nestjs/common";
 import { BoardsService } from "./boards.service";
 import { BoardInfoDTO } from "./dto/boardInfo.dto";
@@ -126,6 +127,7 @@ export class BoardsController {
     }
   }
 
+  @HttpCode(200)
   @Post("/:boardId/likes")
   async convertLikeByUser(
     @Param("boardId") boardId: number,
