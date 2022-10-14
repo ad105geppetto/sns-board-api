@@ -5,9 +5,7 @@ module.exports = {
     return await queryInterface.createTable("hashTags", {
       id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         autoIncrement: true,
-        unique: true,
         primaryKey: true,
       },
       name: {

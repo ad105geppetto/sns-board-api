@@ -5,9 +5,7 @@ module.exports = {
     return queryInterface.createTable("likes", {
       id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         autoIncrement: true,
-        unique: true,
         primaryKey: true,
       },
       user_id: {
