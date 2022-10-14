@@ -10,6 +10,7 @@ import { UpdateBoardInfoDTO } from "./dto/updateBoardInfo.dto";
 import { Op } from "sequelize";
 import { QueryInfoDTO } from "./dto/queryInfo.dto";
 import { Users } from "../users/users.model";
+import { Likes } from "./models/likes.model";
 
 @Injectable()
 export class BoardsService {
@@ -19,6 +20,7 @@ export class BoardsService {
     @InjectModel(BoardHashTags) private boardHashTagModel: typeof BoardHashTags,
     @InjectModel(HashTags) private hashTagsModel: typeof HashTags,
     @InjectModel(Boards) private boardModel: typeof Boards,
+    @InjectModel(Likes) private likeModel: typeof Likes,
   ) {}
 
   async create(boardInfo: BoardInfoDTO, Authorization: string) {
@@ -630,5 +632,32 @@ export class BoardsService {
       },
     });
     return newBoard;
+  }
+
+  async convertLikeByUser(boardId: number, Authorization: string) {
+    const tokenInfo = this.jwtService.verify(Authorization);
+    const userId = tokenInfo.id;
+
+    const result = await this.likeModel.findOne({
+      where: { user_id: userId, board_id: boardId },
+    });
+
+    if (result) {
+      await this.likeModel.destroy({
+        where: {
+          user_id: userId,
+          board_id: boardId,
+        },
+      });
+
+      return { message: "cancel" };
+    } else {
+      await this.likeModel.create({
+        user_id: userId,
+        board_id: boardId,
+      });
+
+      return { message: "success" };
+    }
   }
 }
