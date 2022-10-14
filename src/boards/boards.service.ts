@@ -261,6 +261,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -303,6 +304,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -338,6 +340,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -374,6 +377,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -427,6 +431,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -464,6 +469,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -517,6 +523,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -571,6 +578,7 @@ export class BoardsService {
       include: [
         {
           model: Users,
+          as: "users",
           attributes: ["email"],
         },
         {
