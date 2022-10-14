@@ -343,6 +343,29 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.statusCode).toBe(400);
     });
   });
+
+  describe("POST /boards/:id/likes", () => {
+    it("특정 게시글에서 좋아요를 클릭한다면, 상태코드 200과 success 메세지를 반환합니다.", async () => {
+      const response = await request(app.getHttpServer())
+        .post("/boards/1/likes")
+        .set("Authorization", accessToken);
+      expect(response.statusCode).toBe(200);
+      expect(response.body.message).toBe("success");
+    });
+    it("좋아요를 다시 클릭한다면, 상태코드 200과 cancel 메세지를 반환합니다.", async () => {
+      const response = await request(app.getHttpServer())
+        .post("/boards/1/likes")
+        .set("Authorization", accessToken);
+      expect(response.statusCode).toBe(200);
+      expect(response.body.message).toBe("cancel");
+    });
+    it("로그인하지 않고 좋아요를 클릭한다면, 상태코드 400을 반환합니다.", async () => {
+      const response = await request(app.getHttpServer()).post(
+        `/boards/1/likes`,
+      );
+      expect(response.statusCode).toBe(400);
+    });
+  });
 });
 
 afterAll(async () => {
