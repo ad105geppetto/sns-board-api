@@ -6,9 +6,10 @@ import {
   BelongsTo,
   ForeignKey,
 } from "sequelize-typescript";
-import { Users } from "../../users/users.model";
-import { BoardHashTags } from "./board_hashTags.model";
-import { HashTags } from "./hashTag.model";
+import { Users } from "../../users/entities/users.entity";
+import { BoardHashTags } from "./board_hashTags.entity";
+import { HashTags } from "./hashTag.entity";
+import { Likes } from "./likes.entity";
 
 @Table({
   paranoid: true,
@@ -34,4 +35,7 @@ export class Boards extends Model<Boards> {
 
   @BelongsTo(() => Users)
   users: Users;
+
+  @BelongsToMany(() => Users, () => Likes)
+  usersArr: Users[];
 }

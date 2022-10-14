@@ -1,15 +1,16 @@
 import { Injectable, BadRequestException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { BoardHashTags } from "./models/board_hashTags.model";
-import { HashTags } from "./models/hashTag.model";
-import { Boards } from "./models/boards.model";
+import { BoardHashTags } from "../entities/board_hashTags.entity";
+import { HashTags } from "../entities/hashTag.entity";
+import { Boards } from "../entities/boards.entity";
 import { Sequelize } from "sequelize-typescript";
-import { BoardInfoDTO } from "./dto/boardInfo.dto";
+import { BoardInfoDTO } from "../dto/boardInfo.dto";
 import { JwtService } from "@nestjs/jwt";
-import { UpdateBoardInfoDTO } from "./dto/updateBoardInfo.dto";
+import { UpdateBoardInfoDTO } from "../dto/updateBoardInfo.dto";
 import { Op } from "sequelize";
-import { QueryInfoDTO } from "./dto/queryInfo.dto";
-import { Users } from "../users/users.model";
+import { QueryInfoDTO } from "../dto/queryInfo.dto";
+import { Users } from "../../users/entities/users.entity";
+import { Likes } from "../entities/likes.entity";
 
 @Injectable()
 export class BoardsService {
@@ -19,6 +20,7 @@ export class BoardsService {
     @InjectModel(BoardHashTags) private boardHashTagModel: typeof BoardHashTags,
     @InjectModel(HashTags) private hashTagsModel: typeof HashTags,
     @InjectModel(Boards) private boardModel: typeof Boards,
+    @InjectModel(Likes) private likeModel: typeof Likes,
   ) {}
 
   async create(boardInfo: BoardInfoDTO, Authorization: string) {
@@ -261,6 +263,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -275,16 +278,26 @@ export class BoardsService {
         limit: limit ? limit : 10,
       });
 
-      const result = boards.map((board) => {
-        const data = board.get({ plain: true });
-        const author = data.users.email;
+      const result = Promise.all(
+        boards.map(async (board) => {
+          const data = board.get({ plain: true });
+          const likeCount = await this.likeModel.count({
+            where: { board_id: data.id },
+          });
+          const author = data.users.email;
 
-        delete data.users;
+          delete data.users;
 
-        const newHashTags = data.hashTags.map((result) => result.name);
+          const newHashTags = data.hashTags.map((result) => result.name);
 
-        return { ...data, author: author, hashTags: newHashTags };
-      });
+          return {
+            ...data,
+            author: author,
+            likeCount: likeCount,
+            hashTags: newHashTags,
+          };
+        }),
+      );
 
       return result;
     }
@@ -303,6 +316,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -317,16 +331,26 @@ export class BoardsService {
         limit: limit ? limit : 10,
       });
 
-      const result = boards.map((board) => {
-        const data = board.get({ plain: true });
-        const author = data.users.email;
+      const result = Promise.all(
+        boards.map(async (board) => {
+          const data = board.get({ plain: true });
+          const likeCount = await this.likeModel.count({
+            where: { board_id: data.id },
+          });
+          const author = data.users.email;
 
-        delete data.users;
+          delete data.users;
 
-        const newHashTags = data.hashTags.map((result) => result.name);
+          const newHashTags = data.hashTags.map((result) => result.name);
 
-        return { ...data, author: author, hashTags: newHashTags };
-      });
+          return {
+            ...data,
+            author: author,
+            likeCount: likeCount,
+            hashTags: newHashTags,
+          };
+        }),
+      );
 
       return result;
     }
@@ -338,6 +362,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -353,16 +378,26 @@ export class BoardsService {
         limit: limit ? limit : 10,
       });
 
-      const result = boards.map((board) => {
-        const data = board.get({ plain: true });
-        const author = data.users.email;
+      const result = Promise.all(
+        boards.map(async (board) => {
+          const data = board.get({ plain: true });
+          const likeCount = await this.likeModel.count({
+            where: { board_id: data.id },
+          });
+          const author = data.users.email;
 
-        delete data.users;
+          delete data.users;
 
-        const newHashTags = data.hashTags.map((result) => result.name);
+          const newHashTags = data.hashTags.map((result) => result.name);
 
-        return { ...data, author: author, hashTags: newHashTags };
-      });
+          return {
+            ...data,
+            author: author,
+            likeCount: likeCount,
+            hashTags: newHashTags,
+          };
+        }),
+      );
 
       return result;
     }
@@ -374,6 +409,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -401,14 +437,24 @@ export class BoardsService {
         }
       });
 
-      const newBoards = filteredBoards.map((board) => {
-        const data = board.get({ plain: true });
-        const newBoard = { ...data };
-        const author = data.users.email;
-        delete newBoard.users;
-        const newHashTags = board.hashTags.map((result) => result.name);
-        return { ...newBoard, author: author, hashTags: newHashTags };
-      });
+      const newBoards = Promise.all(
+        filteredBoards.map(async (board) => {
+          const data = board.get({ plain: true });
+          const likeCount = await this.likeModel.count({
+            where: { board_id: data.id },
+          });
+          const newBoard = { ...data };
+          const author = data.users.email;
+          delete newBoard.users;
+          const newHashTags = board.hashTags.map((result) => result.name);
+          return {
+            ...newBoard,
+            author: author,
+            likeCount: likeCount,
+            hashTags: newHashTags,
+          };
+        }),
+      );
 
       return newBoards;
     }
@@ -427,6 +473,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -442,16 +489,26 @@ export class BoardsService {
         limit: limit ? limit : 10,
       });
 
-      const result = boards.map((board) => {
-        const data = board.get({ plain: true });
-        const author = data.users.email;
+      const result = Promise.all(
+        boards.map(async (board) => {
+          const data = board.get({ plain: true });
+          const likeCount = await this.likeModel.count({
+            where: { board_id: data.id },
+          });
+          const author = data.users.email;
 
-        delete data.users;
+          delete data.users;
 
-        const newHashTags = data.hashTags.map((result) => result.name);
+          const newHashTags = data.hashTags.map((result) => result.name);
 
-        return { ...data, author: author, hashTags: newHashTags };
-      });
+          return {
+            ...data,
+            author: author,
+            likeCount: likeCount,
+            hashTags: newHashTags,
+          };
+        }),
+      );
 
       return result;
     }
@@ -464,6 +521,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -491,14 +549,24 @@ export class BoardsService {
         }
       });
 
-      const newBoards = filteredBoards.map((board) => {
-        const data = board.get({ plain: true });
-        const newBoard = { ...data };
-        const author = data.users.email;
-        delete newBoard.users;
-        const newHashTags = board.hashTags.map((result) => result.name);
-        return { ...newBoard, author: author, hashTags: newHashTags };
-      });
+      const newBoards = Promise.all(
+        filteredBoards.map(async (board) => {
+          const data = board.get({ plain: true });
+          const likeCount = await this.likeModel.count({
+            where: { board_id: data.id },
+          });
+          const newBoard = { ...data };
+          const author = data.users.email;
+          delete newBoard.users;
+          const newHashTags = board.hashTags.map((result) => result.name);
+          return {
+            ...newBoard,
+            author: author,
+            likeCount: likeCount,
+            hashTags: newHashTags,
+          };
+        }),
+      );
 
       return newBoards;
     }
@@ -517,6 +585,7 @@ export class BoardsService {
         include: [
           {
             model: Users,
+            as: "users",
             attributes: ["email"],
           },
           {
@@ -544,14 +613,24 @@ export class BoardsService {
         }
       });
 
-      const newBoards = filteredBoards.map((board) => {
-        const data = board.get({ plain: true });
-        const newBoard = { ...data };
-        const author = data.users.email;
-        delete newBoard.users;
-        const newHashTags = board.hashTags.map((result) => result.name);
-        return { ...newBoard, author: author, hashTags: newHashTags };
-      });
+      const newBoards = Promise.all(
+        filteredBoards.map(async (board) => {
+          const data = board.get({ plain: true });
+          const likeCount = await this.likeModel.count({
+            where: { board_id: data.id },
+          });
+          const newBoard = { ...data };
+          const author = data.users.email;
+          delete newBoard.users;
+          const newHashTags = board.hashTags.map((result) => result.name);
+          return {
+            ...newBoard,
+            author: author,
+            likeCount: likeCount,
+            hashTags: newHashTags,
+          };
+        }),
+      );
 
       return newBoards;
     }
@@ -571,6 +650,7 @@ export class BoardsService {
       include: [
         {
           model: Users,
+          as: "users",
           attributes: ["email"],
         },
         {
@@ -597,14 +677,24 @@ export class BoardsService {
       }
     });
 
-    const newBoards = filteredBoards.map((board) => {
-      const data = board.get({ plain: true });
-      const newBoard = { ...data };
-      const author = data.users.email;
-      delete newBoard.users;
-      const newHashTags = board.hashTags.map((result) => result.name);
-      return { ...newBoard, author: author, hashTags: newHashTags };
-    });
+    const newBoards = Promise.all(
+      filteredBoards.map(async (board) => {
+        const data = board.get({ plain: true });
+        const likeCount = await this.likeModel.count({
+          where: { board_id: data.id },
+        });
+        const newBoard = { ...data };
+        const author = data.users.email;
+        delete newBoard.users;
+        const newHashTags = board.hashTags.map((result) => result.name);
+        return {
+          ...newBoard,
+          author: author,
+          likeCount: likeCount,
+          hashTags: newHashTags,
+        };
+      }),
+    );
 
     return newBoards;
   }
@@ -622,5 +712,32 @@ export class BoardsService {
       },
     });
     return newBoard;
+  }
+
+  async convertLikeByUser(boardId: number, Authorization: string) {
+    const tokenInfo = this.jwtService.verify(Authorization);
+    const userId = tokenInfo.id;
+
+    const result = await this.likeModel.findOne({
+      where: { user_id: userId, board_id: boardId },
+    });
+
+    if (result) {
+      await this.likeModel.destroy({
+        where: {
+          user_id: userId,
+          board_id: boardId,
+        },
+      });
+
+      return { message: "cancel" };
+    } else {
+      await this.likeModel.create({
+        user_id: userId,
+        board_id: boardId,
+      });
+
+      return { message: "success" };
+    }
   }
 }

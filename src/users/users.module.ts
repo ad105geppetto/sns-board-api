@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { SequelizeModule } from "@nestjs/sequelize";
 import { Module } from "@nestjs/common";
-import { Users } from "./users.model";
+import { Users } from "./entities/users.entity";
 import { SignupController } from "./controllers/signup.controller";
 import { LoginController } from "./controllers/login.controller";
 import { SignupService } from "./services/signup.service";

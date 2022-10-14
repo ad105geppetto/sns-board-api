@@ -1,13 +1,13 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
 import { SequelizeModule } from "@nestjs/sequelize";
-import { AppService } from "./app.service";
 import { UsersModule } from "./users/users.module";
-import { Users } from "./users/users.model";
+import { Users } from "./users/entities/users.entity";
 import { BoardsModule } from "./boards/boards.module";
-import { Boards } from "./boards/models/boards.model";
-import { HashTags } from "./boards/models/hashTag.model";
-import { BoardHashTags } from "./boards/models/board_hashTags.model";
+import { Boards } from "./boards/entities/boards.entity";
+import { HashTags } from "./boards/entities/hashTag.entity";
+import { BoardHashTags } from "./boards/entities/board_hashTags.entity";
+import { Likes } from "./boards/entities/likes.entity";
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -20,7 +20,7 @@ dotenv.config();
       username: process.env.MYSQL_USERNAME,
       password: process.env.MYSQL_PASSWORD,
       database: process.env.MYSQL_DATABASE,
-      models: [Users, Boards, HashTags, BoardHashTags],
+      models: [Users, Boards, HashTags, BoardHashTags, Likes],
       dialectOptions: {
         useUTC: false, //for reading from database
         dateStrings: true,
@@ -32,7 +32,7 @@ dotenv.config();
     UsersModule,
     BoardsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

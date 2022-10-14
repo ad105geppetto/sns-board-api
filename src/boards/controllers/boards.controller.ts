@@ -9,11 +9,12 @@ import {
   Delete,
   Get,
   Query,
+  HttpCode,
 } from "@nestjs/common";
-import { BoardsService } from "./boards.service";
-import { BoardInfoDTO } from "./dto/boardInfo.dto";
-import { QueryInfoDTO } from "./dto/queryInfo.dto";
-import { UpdateBoardInfoDTO } from "./dto/updateBoardInfo.dto";
+import { BoardsService } from "../services/boards.service";
+import { BoardInfoDTO } from "../dto/boardInfo.dto";
+import { QueryInfoDTO } from "../dto/queryInfo.dto";
+import { UpdateBoardInfoDTO } from "../dto/updateBoardInfo.dto";
 
 @Controller("boards")
 export class BoardsController {
@@ -119,6 +120,28 @@ export class BoardsController {
   async getOne(@Param("boardId") boardId: number) {
     try {
       const data = await this.boardsService.getOne(boardId);
+
+      return data;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  @HttpCode(200)
+  @Post("/:boardId/likes")
+  async convertLikeByUser(
+    @Param("boardId") boardId: number,
+    @Headers("Authorization")
+    Authorization: string,
+  ) {
+    try {
+      if (!Authorization) {
+        throw new BadRequestException("로그인해주세요.");
+      }
+      const data = await this.boardsService.convertLikeByUser(
+        boardId,
+        Authorization,
+      );
 
       return data;
     } catch (error) {

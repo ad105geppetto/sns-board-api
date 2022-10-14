@@ -1,6 +1,6 @@
 import { Column, Model, Table, BelongsToMany } from "sequelize-typescript";
-import { Boards } from "./boards.model";
-import { BoardHashTags } from "./board_hashTags.model";
+import { Boards } from "./boards.entity";
+import { BoardHashTags } from "./board_hashTags.entity";
 
 @Table({
   paranoid: true,

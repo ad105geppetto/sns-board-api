@@ -5,9 +5,7 @@ module.exports = {
     return await queryInterface.createTable("boards", {
       id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         autoIncrement: true,
-        unique: true,
         primaryKey: true,
       },
       title: {
@@ -28,6 +26,7 @@ module.exports = {
       },
       views_count: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         defaultValue: 0,
       },
       createdAt: {
