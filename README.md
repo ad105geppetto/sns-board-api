@@ -51,7 +51,7 @@ $ npm run start
 $ npm run test:e2e
 ```
 
-<img src="https://user-images.githubusercontent.com/92367032/195942436-4ac11e66-db2d-4bee-a2a3-d84db4f417fa.png"/>
+<img src="https://user-images.githubusercontent.com/92367032/196006112-0e0cd2b3-ce4c-4dfe-864d-2165976f5095.png"/>
 <br/>
 
 ## 📌 요구사항
@@ -177,7 +177,7 @@ ex) { “hashtags”: “#맛집,#서울,#브런치 카페,#주말”, …}
 
 ## 📌 DB 모델링
 
-![sns](https://user-images.githubusercontent.com/92367032/195942359-66c06b6a-3b27-4a80-abcf-c4d46f4c168d.png)
+<img src="https://user-images.githubusercontent.com/92367032/196006124-3e0356ca-960d-4362-b979-55a2123d4078.png"/>
 
 ## 📌 API 문서
 
