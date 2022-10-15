@@ -35,6 +35,13 @@ describe("📌 유저 통합 테스트", () => {
       expect(response.statusCode).toBe(201);
       expect(response.body.email).toBe("gildong@naver.com");
     });
+    it("동일한 이메일을 입력하여 회원가입 요청을 하면, 상태코드 400을 반환합니다.", async () => {
+      const response = await request(app.getHttpServer()).post("/signup").send({
+        email: "gildong@naver.com",
+      });
+      expect(response.statusCode).toBe(400);
+      expect(response.body.message).toBe("동일한 이메일이 존재합니다.");
+    });
     it("회원가입 요청을 실패하면, 상태코드 400을 반환합니다.", async () => {
       const response = await request(app.getHttpServer()).post("/signup").send({
         email: "",
