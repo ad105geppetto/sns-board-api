@@ -718,26 +718,49 @@ export class BoardsService {
     const tokenInfo = this.jwtService.verify(Authorization);
     const userId = tokenInfo.id;
 
-    const result = await this.likeModel.findOne({
-      where: { user_id: userId, board_id: boardId },
-    });
+    return await this.sequelize.transaction(async (transaction) => {
+      const transactionHost = { transaction: transaction };
+      const result = await this.likeModel.findOne({
+        where: { user_id: userId, board_id: boardId },
+        ...transactionHost,
+      });
 
-    if (result) {
-      await this.likeModel.destroy({
-        where: {
-          user_id: userId,
-          board_id: boardId,
+      if (result) {
+        await this.likeModel.destroy({
+          where: {
+            user_id: userId,
+            board_id: boardId,
+          },
+          ...transactionHost,
+        });
+      } else {
+        await this.likeModel.create(
+          {
+            user_id: userId,
+            board_id: boardId,
+          },
+          transactionHost,
+        );
+      }
+
+      const likeCount = await this.likeModel.count({
+        where: { board_id: boardId },
+        ...transactionHost,
+      });
+
+      await this.boardModel.update(
+        {
+          likes_count: likeCount,
         },
-      });
+        {
+          where: {
+            id: boardId,
+          },
+          ...transactionHost,
+        },
+      );
 
-      return { message: "cancel" };
-    } else {
-      await this.likeModel.create({
-        user_id: userId,
-        board_id: boardId,
-      });
-
-      return { message: "success" };
-    }
+      return { message: result ? "cancel" : "success" };
+    });
   }
 }
