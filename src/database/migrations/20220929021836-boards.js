@@ -29,6 +29,11 @@ module.exports = {
         allowNull: false,
         defaultValue: 0,
       },
+      likes_count: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

@@ -281,9 +281,6 @@ export class BoardsService {
       const result = Promise.all(
         boards.map(async (board) => {
           const data = board.get({ plain: true });
-          const likeCount = await this.likeModel.count({
-            where: { board_id: data.id },
-          });
           const author = data.users.email;
 
           delete data.users;
@@ -293,7 +290,6 @@ export class BoardsService {
           return {
             ...data,
             author: author,
-            likeCount: likeCount,
             hashTags: newHashTags,
           };
         }),
@@ -334,9 +330,6 @@ export class BoardsService {
       const result = Promise.all(
         boards.map(async (board) => {
           const data = board.get({ plain: true });
-          const likeCount = await this.likeModel.count({
-            where: { board_id: data.id },
-          });
           const author = data.users.email;
 
           delete data.users;
@@ -346,7 +339,6 @@ export class BoardsService {
           return {
             ...data,
             author: author,
-            likeCount: likeCount,
             hashTags: newHashTags,
           };
         }),
@@ -381,9 +373,6 @@ export class BoardsService {
       const result = Promise.all(
         boards.map(async (board) => {
           const data = board.get({ plain: true });
-          const likeCount = await this.likeModel.count({
-            where: { board_id: data.id },
-          });
           const author = data.users.email;
 
           delete data.users;
@@ -393,7 +382,6 @@ export class BoardsService {
           return {
             ...data,
             author: author,
-            likeCount: likeCount,
             hashTags: newHashTags,
           };
         }),
@@ -440,9 +428,6 @@ export class BoardsService {
       const newBoards = Promise.all(
         filteredBoards.map(async (board) => {
           const data = board.get({ plain: true });
-          const likeCount = await this.likeModel.count({
-            where: { board_id: data.id },
-          });
           const newBoard = { ...data };
           const author = data.users.email;
           delete newBoard.users;
@@ -450,7 +435,6 @@ export class BoardsService {
           return {
             ...newBoard,
             author: author,
-            likeCount: likeCount,
             hashTags: newHashTags,
           };
         }),
@@ -492,9 +476,6 @@ export class BoardsService {
       const result = Promise.all(
         boards.map(async (board) => {
           const data = board.get({ plain: true });
-          const likeCount = await this.likeModel.count({
-            where: { board_id: data.id },
-          });
           const author = data.users.email;
 
           delete data.users;
@@ -504,7 +485,6 @@ export class BoardsService {
           return {
             ...data,
             author: author,
-            likeCount: likeCount,
             hashTags: newHashTags,
           };
         }),
@@ -552,9 +532,6 @@ export class BoardsService {
       const newBoards = Promise.all(
         filteredBoards.map(async (board) => {
           const data = board.get({ plain: true });
-          const likeCount = await this.likeModel.count({
-            where: { board_id: data.id },
-          });
           const newBoard = { ...data };
           const author = data.users.email;
           delete newBoard.users;
@@ -562,7 +539,6 @@ export class BoardsService {
           return {
             ...newBoard,
             author: author,
-            likeCount: likeCount,
             hashTags: newHashTags,
           };
         }),
@@ -616,9 +592,6 @@ export class BoardsService {
       const newBoards = Promise.all(
         filteredBoards.map(async (board) => {
           const data = board.get({ plain: true });
-          const likeCount = await this.likeModel.count({
-            where: { board_id: data.id },
-          });
           const newBoard = { ...data };
           const author = data.users.email;
           delete newBoard.users;
@@ -626,7 +599,6 @@ export class BoardsService {
           return {
             ...newBoard,
             author: author,
-            likeCount: likeCount,
             hashTags: newHashTags,
           };
         }),
@@ -680,9 +652,6 @@ export class BoardsService {
     const newBoards = Promise.all(
       filteredBoards.map(async (board) => {
         const data = board.get({ plain: true });
-        const likeCount = await this.likeModel.count({
-          where: { board_id: data.id },
-        });
         const newBoard = { ...data };
         const author = data.users.email;
         delete newBoard.users;
@@ -690,7 +659,6 @@ export class BoardsService {
         return {
           ...newBoard,
           author: author,
-          likeCount: likeCount,
           hashTags: newHashTags,
         };
       }),
@@ -718,26 +686,49 @@ export class BoardsService {
     const tokenInfo = this.jwtService.verify(Authorization);
     const userId = tokenInfo.id;
 
-    const result = await this.likeModel.findOne({
-      where: { user_id: userId, board_id: boardId },
-    });
+    return await this.sequelize.transaction(async (transaction) => {
+      const transactionHost = { transaction: transaction };
+      const result = await this.likeModel.findOne({
+        where: { user_id: userId, board_id: boardId },
+        ...transactionHost,
+      });
 
-    if (result) {
-      await this.likeModel.destroy({
-        where: {
-          user_id: userId,
-          board_id: boardId,
+      if (result) {
+        await this.likeModel.destroy({
+          where: {
+            user_id: userId,
+            board_id: boardId,
+          },
+          ...transactionHost,
+        });
+      } else {
+        await this.likeModel.create(
+          {
+            user_id: userId,
+            board_id: boardId,
+          },
+          transactionHost,
+        );
+      }
+
+      const likeCount = await this.likeModel.count({
+        where: { board_id: boardId },
+        ...transactionHost,
+      });
+
+      await this.boardModel.update(
+        {
+          likes_count: likeCount,
         },
-      });
+        {
+          where: {
+            id: boardId,
+          },
+          ...transactionHost,
+        },
+      );
 
-      return { message: "cancel" };
-    } else {
-      await this.likeModel.create({
-        user_id: userId,
-        board_id: boardId,
-      });
-
-      return { message: "success" };
-    }
+      return { message: result ? "cancel" : "success" };
+    });
   }
 }
