@@ -12,41 +12,41 @@
   <img src="https://img.shields.io/badge/.ENV-ECD53F?style=for-the-badge&logo=.ENV&logoColor=white">
 </div>
 
-## 📌 목차
+## 목차
 
-1. [설치환경](#📌-설치환경)
+1. [설치환경](#설치환경)
 
-2. [설치](#📌-설치)
+2. [설치](#설치)
 
-3. [환경 변수 설정](#📌-환경-변수-설정)
+3. [환경 변수 설정](#환경-변수-설정)
 
-4. [앱 실행](#📌-앱-실행)
+4. [앱 실행](#앱-실행)
 
-5. [테스트](#📌-테스트)
+5. [테스트](#테스트)
 
-   - [Unit TEST](#📌-Unit-TEST)
+   - [Unit TEST](#Unit-TEST)
 
-   - [E2E TEST](#📌-E2E-TEST)
+   - [E2E TEST](#E2E-TEST)
 
-6. [요구사항](#📌-요구사항)
-7. [DB 모델링](#📌-db-모델링)
-8. [API 문서](#📌-api-문서)
-9. [Commit Convention](#📌-commit-convention)
+6. [요구사항](#요구사항)
+7. [DB 모델링](#db-모델링)
+8. [API 문서](#api-문서)
+9. [Commit Convention](#commit-convention)
 
-## 📌 설치환경
+## 설치환경
 
 - Ubuntu 22.04.1 LTS
 - MySQL v8.0.30
 - Node.js v16.17.1 (lts version)
 - npm v8.15.0
 
-## 📌 설치
+## 설치
 
 ```bash
 $ npm install
 ```
 
-## 📌 환경 변수 설정
+## 환경 변수 설정
 
 ```bash
 ## .env 안에 들어갈 내용
@@ -58,14 +58,14 @@ MYSQL_PORT= db 포트 번호
 SECRET= jwt 시크릿 키
 ```
 
-## 📌 앱 실행
+## 앱 실행
 
 ```bash
 # development
 $ npm run start
 ```
 
-## 📌 테스트
+## 테스트
 
 ```bash
 # Unit tests
@@ -121,7 +121,7 @@ Login Service
 
 <img src="https://user-images.githubusercontent.com/92367032/196006112-0e0cd2b3-ce4c-4dfe-864d-2165976f5095.png"/>
 
-## 📌 요구사항
+## 요구사항
 
 ### A. 유저관리
 
@@ -242,15 +242,15 @@ ex) { “hashtags”: “#맛집,#서울,#브런치 카페,#주말”, …}
 
 - 위 기능들은 각각이 아닌 서로 조합하여 사용할 수 있어야합니다.
 
-## 📌 DB 모델링
+## DB 모델링
 
 <img src="https://user-images.githubusercontent.com/92367032/196006124-3e0356ca-960d-4362-b979-55a2123d4078.png"/>
 
-## 📌 API 문서
+## API 문서
 
 https://iris-feta-eb2.notion.site/6072d6b25ca341c495c59f516374e05b?v=7979a1842b02439ea9c855e19787bc89
 
-## 📌 Commit Convention
+## Commit Convention
 
 - init : 초기화
 - feat : 새로운 기능 추가
@@ -261,7 +261,7 @@ https://iris-feta-eb2.notion.site/6072d6b25ca341c495c59f516374e05b?v=7979a1842b0
 - test : 테스트 코드, 리팩터링 테스트 코드 추가
 - chore : 빌드 업무 수정, 패키지 매니저 수정, 그 외 자잘한 수정에 대한 커밋
 
-## 📌 Todo list
+## Todo list
 
 - ~~좋아요 기능 구현 예정~~
 - ~~게시글 목록을 정렬(orderBy)로 조회할 때, 요구사항에 맞게 재작업 예정~~
