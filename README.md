@@ -47,12 +47,58 @@ $ npm run start
 ## 📌 테스트
 
 ```bash
+# Unit tests
+$ npm run test
+
 # e2e tests
 $ npm run test:e2e
 ```
 
+### Unit TEST
+
+**테스트 커버리지**
+
+Signup Controller
+
+- 회원가입 컨트롤러 확인
+- 컨트롤러의 함수 확인
+- 회원가입 서비스의 함수(create) 호출 확인
+- 유저 생성 기능 확인
+
+  <img src="https://user-images.githubusercontent.com/92367032/196283887-ace352f1-28df-445e-84fb-18609754058f.png"/>
+
+Signup Service
+
+- 회원가입 서비스 확인
+- 서비스의 함수 확인
+- 유저 모델(entity)의 함수(findOrCreate) 호출 확인
+- 유저 생성 기능 확인
+- 회원이 존재하는 경우 에러 반환
+
+  <img src="https://user-images.githubusercontent.com/92367032/196283887-ace352f1-28df-445e-84fb-18609754058f.png"/>
+
+Login Controller
+
+- 로그인 컨트롤러 확인
+- 컨트롤러의 함수 확인
+- 로그인 서비스의 함수(create) 호출 확인
+- 유저 로그인 기능 확인
+
+  <img src="https://user-images.githubusercontent.com/92367032/196285845-13bba1cc-6118-447a-b569-ed9004f357c0.png"/>
+
+Login Service
+
+- 로그인 서비스 확인
+- 서비스의 함수 확인
+- 유저 모델(entity)의 함수(findOne) 호출 확인
+- 유저 로그인 기능 확인
+- 이메일이 존재하지 않는 경우 에러 반환
+
+  <img src="https://user-images.githubusercontent.com/92367032/196285913-c1bdc32f-12e9-42e2-8e4b-2526d08d3d66.png"/>
+
+### E2E TEST
+
 <img src="https://user-images.githubusercontent.com/92367032/196006112-0e0cd2b3-ce4c-4dfe-864d-2165976f5095.png"/>
-<br/>
 
 ## 📌 요구사항
 
@@ -198,3 +244,4 @@ https://iris-feta-eb2.notion.site/6072d6b25ca341c495c59f516374e05b?v=7979a1842b0
 
 - ~~좋아요 기능 구현 예정~~
 - ~~게시글 목록을 정렬(orderBy)로 조회할 때, 요구사항에 맞게 재작업 예정~~
+- Unit Test 구현 예정
