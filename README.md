@@ -12,6 +12,27 @@
   <img src="https://img.shields.io/badge/.ENV-ECD53F?style=for-the-badge&logo=.ENV&logoColor=white">
 </div>
 
+## 📌 목차
+
+1. [설치환경](#📌-설치환경)
+
+2. [설치](#📌-설치)
+
+3. [환경 변수 설정](#📌-환경-변수-설정)
+
+4. [앱 실행](#📌-앱-실행)
+
+5. [테스트](#📌-테스트)
+
+   - [Unit TEST](#📌-Unit-TEST)
+
+   - [E2E TEST](#📌-E2E-TEST)
+
+6. [요구사항](#📌-요구사항)
+7. [DB 모델링](#📌-db-모델링)
+8. [API 문서](#📌-api-문서)
+9. [Commit Convention](#📌-commit-convention)
+
 ## 📌 설치환경
 
 - Ubuntu 22.04.1 LTS
@@ -75,7 +96,7 @@ Signup Service
 - 유저 생성 기능 확인
 - 회원이 존재하는 경우 에러 반환
 
-  <img src="https://user-images.githubusercontent.com/92367032/196283887-ace352f1-28df-445e-84fb-18609754058f.png"/>
+  <img src="https://user-images.githubusercontent.com/92367032/196292646-f4328e7a-f21f-4be0-9724-4c42fe3426d3.png"/>
 
 Login Controller
 
