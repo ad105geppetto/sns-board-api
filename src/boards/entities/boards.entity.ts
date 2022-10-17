@@ -30,6 +30,9 @@ export class Boards extends Model<Boards> {
   @Column
   views_count: number;
 
+  @Column
+  likes_count: number;
+
   @BelongsToMany(() => HashTags, () => BoardHashTags)
   hashTags: HashTags[];
 

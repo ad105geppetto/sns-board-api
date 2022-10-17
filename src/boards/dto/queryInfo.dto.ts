@@ -6,9 +6,9 @@ class QueryDTO {
   @IsString()
   readonly search: string;
 
-  @IsIn(["createdAt", "views_count"])
+  @IsIn(["createdAt", "views_count", "likes_count"])
   @IsString()
-  readonly sortBy: "createdAt" | "views_count";
+  readonly sortBy: "createdAt" | "views_count" | "likes_count";
 
   @Transform((params) => {
     return params.value.toLowerCase();
