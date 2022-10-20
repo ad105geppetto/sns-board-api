@@ -143,7 +143,7 @@ Boards Service
 
 ### E2E TEST
 
-<img src="https://user-images.githubusercontent.com/92367032/196941626-83b8df47-deb5-408b-9eb2-e8b6c7c65418.png"/>
+<img src="https://user-images.githubusercontent.com/92367032/196946338-e6fa728f-7194-4135-af13-f64db3da5c6d.png"/>
 
 ## 요구사항
 
