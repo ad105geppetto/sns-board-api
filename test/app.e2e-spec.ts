@@ -292,9 +292,9 @@ describe("📌 게시글 통합 테스트", () => {
       expect(response.body.title).toBe("오늘도 열공!!");
       expect(response.body.content).toBe("주말이 뭐죠??");
     });
-    it("특정 게시글 조회를 실패하면, 상태코드 400을 반환합니다.", async () => {
+    it("특정 게시글 조회를 실패하면, 상태코드 404을 반환합니다.", async () => {
       const response = await request(app.getHttpServer()).get(`/boards/000`);
-      expect(response.statusCode).toBe(400);
+      expect(response.statusCode).toBe(404);
     });
   });
 
@@ -316,12 +316,12 @@ describe("📌 게시글 통합 테스트", () => {
         .send({ title: "열공!!" });
       expect(response.statusCode).toBe(400);
     });
-    it("특정 게시글 수정을 실패하면, 상태코드 400을 반환합니다.", async () => {
+    it("특정 게시글 수정을 실패하면, 상태코드 404을 반환합니다.", async () => {
       const response = await request(app.getHttpServer())
         .patch(`/boards/000`)
         .set("Authorization", accessToken)
         .send({ title: "열공!!" });
-      expect(response.statusCode).toBe(400);
+      expect(response.statusCode).toBe(404);
     });
   });
 
