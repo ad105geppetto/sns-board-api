@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from "@nestjs/common";
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { BoardHashTags } from "../entities/board_hashTags.entity";
 import { HashTags } from "../entities/hashTag.entity";
@@ -138,6 +142,10 @@ export class BoardsService {
       raw: true,
     });
 
+    if (!board) {
+      throw new NotFoundException();
+    }
+
     if (tokenInfo.id !== board.user_id) {
       throw new BadRequestException("해당 글의 작성자가 아닙니다.");
     }
@@ -236,6 +244,10 @@ export class BoardsService {
       },
       raw: true,
     });
+
+    if (!board) {
+      throw new NotFoundException();
+    }
 
     if (tokenInfo.id !== board.user_id) {
       throw new BadRequestException("해당 글의 작성자가 아닙니다.");
@@ -669,6 +681,11 @@ export class BoardsService {
 
   async getOne(boardId: number) {
     const board = await this.boardModel.findByPk(boardId);
+
+    if (!board) {
+      throw new NotFoundException();
+    }
+
     await this.boardModel.update(
       { views_count: board.views_count + 1 },
       { where: { id: boardId } },
