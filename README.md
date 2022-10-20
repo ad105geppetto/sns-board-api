@@ -105,7 +105,7 @@ Login Controller
 - 로그인 서비스의 함수(create) 호출 확인
 - 유저 로그인 기능 확인
 
-  <img src="https://user-images.githubusercontent.com/92367032/196285845-13bba1cc-6118-447a-b569-ed9004f357c0.png"/>
+  <img src="https://user-images.githubusercontent.com/92367032/196941090-2348569d-a985-4ab2-87e9-0508848e9fa6.png"/>
 
 Login Service
 
@@ -117,9 +117,33 @@ Login Service
 
   <img src="https://user-images.githubusercontent.com/92367032/196285913-c1bdc32f-12e9-42e2-8e4b-2526d08d3d66.png"/>
 
+Boards Controller
+
+- 게시글 생성 Unit Test
+- 게시글 목록 조회 Unit Test
+- 게시글 조회 Unit Test
+- 게시글 수정 Unit Test
+- 게시글 삭제 Unit Test
+- 게시글 복구 Unit Test
+- 좋아요 기능 Unit Test
+
+  <img src="https://user-images.githubusercontent.com/92367032/196941348-f86f75f8-a70e-4594-a092-391d2cc35d73.png"/>
+
+Boards Service
+
+- 게시글 생성 Unit Test
+- 게시글 목록 조회 Unit Test
+- 게시글 조회 Unit Test
+- 게시글 수정 Unit Test
+- 게시글 삭제 Unit Test
+- 게시글 복구 Unit Test
+- 좋아요 기능 Unit Test
+
+  <img src="https://user-images.githubusercontent.com/92367032/196941626-83b8df47-deb5-408b-9eb2-e8b6c7c65418.png"/>
+
 ### E2E TEST
 
-<img src="https://user-images.githubusercontent.com/92367032/196006112-0e0cd2b3-ce4c-4dfe-864d-2165976f5095.png"/>
+<img src="https://user-images.githubusercontent.com/92367032/196941626-83b8df47-deb5-408b-9eb2-e8b6c7c65418.png"/>
 
 ## 요구사항
 
@@ -260,9 +284,3 @@ https://iris-feta-eb2.notion.site/6072d6b25ca341c495c59f516374e05b?v=7979a1842b0
 - refactor : 코드 리팩터링
 - test : 테스트 코드, 리팩터링 테스트 코드 추가
 - chore : 빌드 업무 수정, 패키지 매니저 수정, 그 외 자잘한 수정에 대한 커밋
-
-## Todo list
-
-- ~~좋아요 기능 구현 예정~~
-- ~~게시글 목록을 정렬(orderBy)로 조회할 때, 요구사항에 맞게 재작업 예정~~
-- Unit Test 구현 예정
