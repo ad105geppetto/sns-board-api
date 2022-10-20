@@ -25,25 +25,21 @@ export class BoardsController {
     @Body() boardInfo: BoardInfoDTO,
     @Headers("Authorization") Authorization: string,
   ) {
-    try {
-      if (!Authorization) {
-        throw new BadRequestException("로그인해주세요.");
-      }
-
-      boardInfo.hashTags.forEach((hashTag) => {
-        if (hashTag.indexOf("#") !== 0) {
-          throw new BadRequestException(
-            "각각의 hashTag에 #이 포함되어야 합니다.",
-          );
-        }
-      });
-
-      const data = await this.boardsService.create(boardInfo, Authorization);
-
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error.message);
+    if (!Authorization) {
+      throw new BadRequestException("로그인해주세요.");
     }
+
+    boardInfo.hashTags.forEach((hashTag) => {
+      if (hashTag.indexOf("#") !== 0) {
+        throw new BadRequestException(
+          "각각의 hashTag에 #이 포함되어야 합니다.",
+        );
+      }
+    });
+
+    const data = await this.boardsService.create(boardInfo, Authorization);
+
+    return data;
   }
 
   @Patch(":boardId/restoration")
@@ -51,17 +47,13 @@ export class BoardsController {
     @Param("boardId") boardId: number,
     @Headers("Authorization") Authorization: string,
   ) {
-    try {
-      if (!Authorization) {
-        throw new BadRequestException("로그인해주세요.");
-      }
-
-      const data = await this.boardsService.restore(boardId, Authorization);
-
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error.message);
+    if (!Authorization) {
+      throw new BadRequestException("로그인해주세요.");
     }
+
+    const data = await this.boardsService.restore(boardId, Authorization);
+
+    return data;
   }
 
   @Patch(":boardId")
@@ -70,21 +62,17 @@ export class BoardsController {
     @Body() boardInfo: UpdateBoardInfoDTO,
     @Headers("Authorization") Authorization: string,
   ) {
-    try {
-      if (!Authorization) {
-        throw new BadRequestException("로그인해주세요.");
-      }
-
-      const data = await this.boardsService.update(
-        boardId,
-        boardInfo,
-        Authorization,
-      );
-
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error.message);
+    if (!Authorization) {
+      throw new BadRequestException("로그인해주세요.");
     }
+
+    const data = await this.boardsService.update(
+      boardId,
+      boardInfo,
+      Authorization,
+    );
+
+    return data;
   }
 
   @Delete(":boardId")
@@ -92,39 +80,27 @@ export class BoardsController {
     @Param("boardId") boardId: number,
     @Headers("Authorization") Authorization: string,
   ) {
-    try {
-      if (!Authorization) {
-        throw new BadRequestException("로그인해주세요.");
-      }
-
-      const data = await this.boardsService.delete(boardId, Authorization);
-
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error.message);
+    if (!Authorization) {
+      throw new BadRequestException("로그인해주세요.");
     }
+
+    const data = await this.boardsService.delete(boardId, Authorization);
+
+    return data;
   }
 
   @Get()
   async getAll(@Query() queryInfo: QueryInfoDTO) {
-    try {
-      const data = await this.boardsService.getAll(queryInfo);
+    const data = await this.boardsService.getAll(queryInfo);
 
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
+    return data;
   }
 
   @Get(":boardId")
   async getOne(@Param("boardId") boardId: number) {
-    try {
-      const data = await this.boardsService.getOne(boardId);
+    const data = await this.boardsService.getOne(boardId);
 
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
+    return data;
   }
 
   @HttpCode(200)
@@ -134,18 +110,14 @@ export class BoardsController {
     @Headers("Authorization")
     Authorization: string,
   ) {
-    try {
-      if (!Authorization) {
-        throw new BadRequestException("로그인해주세요.");
-      }
-      const data = await this.boardsService.convertLikeByUser(
-        boardId,
-        Authorization,
-      );
-
-      return data;
-    } catch (error) {
-      throw new BadRequestException(error.message);
+    if (!Authorization) {
+      throw new BadRequestException("로그인해주세요.");
     }
+    const data = await this.boardsService.convertLikeByUser(
+      boardId,
+      Authorization,
+    );
+
+    return data;
   }
 }
