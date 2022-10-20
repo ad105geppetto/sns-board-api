@@ -1,29 +1,27 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return await queryInterface.createTable('board_hashTags', {
+    return await queryInterface.createTable("board_hashTags", {
       id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         autoIncrement: true,
-        unique: true,
         primaryKey: true,
       },
       board_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'boards',
-          key: 'id',
+          model: "boards",
+          key: "id",
         },
       },
       hashTag_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'hashTags',
-          key: 'id',
+          model: "hashTags",
+          key: "id",
         },
       },
       createdAt: {
@@ -41,7 +39,7 @@ module.exports = {
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
-    return await queryInterface.dropTable('board_hashTags');
+  down: async (queryInterface) => {
+    return await queryInterface.dropTable("board_hashTags");
   },
 };

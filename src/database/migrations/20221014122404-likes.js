@@ -2,19 +2,11 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return await queryInterface.createTable("boards", {
+    return queryInterface.createTable("likes", {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
-      },
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      content: {
-        type: Sequelize.STRING,
-        allowNull: false,
       },
       user_id: {
         type: Sequelize.INTEGER,
@@ -24,15 +16,13 @@ module.exports = {
           key: "id",
         },
       },
-      views_count: {
+      board_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 0,
-      },
-      likes_count: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
+        references: {
+          model: "boards",
+          key: "id",
+        },
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -50,6 +40,6 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    return await queryInterface.dropTable("boards");
+    return await queryInterface.dropTable("likes");
   },
 };
